@@ -1,0 +1,5 @@
+node_modules/
+.tmp/
+.playwright-mcp/
+scripts/fonts/*.ttf
+__pycache__/

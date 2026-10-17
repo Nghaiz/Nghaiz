@@ -1,0 +1,13 @@
+{
+  "name": "nghaiz-profile",
+  "private": true,
+  "type": "module",
+  "description": "Asset generator for the Nghaiz GitHub profile README (anime theme).",
+  "scripts": {
+    "build": "node scripts/build-assets.mjs",
+    "stats": "node scripts/build-stats.mjs"
+  },
+  "dependencies": {
+    "opentype.js": "^1.3.4"
+  }
+}
