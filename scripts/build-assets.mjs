@@ -8,12 +8,13 @@ import { fileURLToPath } from 'node:url';
 import { loadFonts } from './lib/type.mjs';
 import { MODES } from './lib/journal.mjs';
 import { profile } from './profile.config.mjs';
-import { STACK } from './stack.config.mjs';
+import { DEVOPS, STACK } from './stack.config.mjs';
 import { hero } from './assets/hero.mjs';
 import { tokyo, dawnBanner, sunlight } from './assets/scenes.mjs';
 import { heading } from './assets/heading.mjs';
 import { project } from './assets/project.mjs';
 import { toolbox } from './assets/toolbox.mjs';
+import { devopsCard } from './assets/devops.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'assets');
@@ -39,6 +40,7 @@ for (const [mode, tone] of Object.entries(MODES)) {
   profile.projects.forEach((p, i) => {
     builders[`${p.file}-${mode}.svg`] = () => project(p, profile.login, tone, 11 + i);
   });
+  builders[`stack-${DEVOPS.key}-${mode}.svg`] = () => devopsCard(DEVOPS, tone);
   for (const group of STACK) builders[`stack-${group.key}-${mode}.svg`] = () => toolbox(group, tone);
 }
 

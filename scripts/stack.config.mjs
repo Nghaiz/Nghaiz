@@ -18,15 +18,30 @@ export const LOGOS = {
   Pytest: 'pytest', Vitest: 'vitest', Playwright: 'playwright', Maven: 'maven', Gradle: 'gradle', pnpm: 'pnpm',
 };
 
-/** The toolbox cards, in README order (two per row). */
+/**
+ * The featured card, first in the stack and full width because it is where I'm heading: my pipeline
+ * drawn as a road, stop by stop, then the cloud I'm learning next. Rendered by assets/devops.mjs.
+ */
+export const DEVOPS = {
+  key: 'devops', title: 'DevOps & Cloud', note: "the road I'm on: from writing code to shipping and running it", doodle: 'cloud', tag: 'main quest',
+  stops: [
+    { label: 'push', items: ['Git'] },
+    { label: 'CI gates', items: ['GitHub Actions', 'Jenkins'], note: '+ Trivy, gitleaks, CodeQL' },
+    { label: 'package', items: ['Docker'], note: 'built in CI' },
+    { label: 'provision', items: ['Terraform'], note: 'infra as code' },
+    { label: 'deploy', items: ['Kubernetes', 'Helm'] },
+    { label: 'serve', items: ['Nginx', 'Linux'] },
+  ],
+  here: 'you are here',
+  next: { title: 'next on the road', note: 'learning these now', items: ['AWS', 'Google Cloud', 'Azure', 'Prometheus', 'Grafana'] },
+};
+
+/** The toolbox cards under it, in README order (two per row, so pairs keep the same height). */
 export const STACK = [
   { key: 'languages', title: 'Languages', note: 'what I think in', doodle: 'code', items: ['C#', 'Python', 'TypeScript', 'JavaScript', 'Java', 'Go', 'Dart', 'C++', 'Bash', 'PowerShell'] },
   { key: 'apps', title: 'Apps & games', note: 'web, mobile, Unity', doodle: 'browser', items: ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Three.js', 'HTML', 'CSS', 'Flutter', 'Unity'] },
-  { key: 'backend', title: 'Backend', note: 'APIs and services', doodle: 'server', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Spring Boot', '.NET', 'Socket.IO'] },
+  { key: 'backend', title: 'Backend', note: 'APIs, services, queues', doodle: 'server', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Spring Boot', '.NET', 'Socket.IO', 'RabbitMQ'] },
   { key: 'data', title: 'Data & AI', note: 'notebooks to models', doodle: 'flask', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'NumPy', 'Pandas', 'Jupyter', 'Streamlit', 'XGBoost', 'YOLO'] },
-  {
-    key: 'devops', title: 'DevOps & Cloud', note: 'where I am heading', doodle: 'cloud',
-    items: ['Docker', 'Kubernetes', 'Helm', 'Terraform', 'GitHub Actions', 'Jenkins', 'Nginx', 'Linux', { name: 'AWS', next: true }, { name: 'Google Cloud', next: true }, { name: 'Azure', next: true }, { name: 'Prometheus', next: true }, { name: 'Grafana', next: true }],
-  },
-  { key: 'stores', title: 'Data stores & tools', note: 'the everyday kit', doodle: 'wrench', items: ['MongoDB', 'MySQL', 'Redis', 'SQLite', 'RabbitMQ', 'Neo4j', 'Git', 'VS Code', 'IntelliJ IDEA', 'Postman', 'Pytest', 'Playwright'] },
+  { key: 'stores', title: 'Databases', note: 'where the data lives', doodle: 'database', items: ['MongoDB', 'MySQL', 'Redis', 'SQLite', 'Neo4j'] },
+  { key: 'tools', title: 'Everyday tools', note: 'editors and testing', doodle: 'wrench', items: ['VS Code', 'IntelliJ IDEA', 'Postman', 'Pytest', 'Playwright'] },
 ];

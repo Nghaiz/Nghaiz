@@ -36,12 +36,13 @@ University gave me the rest: a multiplayer FPS netcode on raw TCP/UDP, RAG over 
 </picture>
 
 <p align="center">
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-devops-dark.svg"><img src="assets/stack-devops-light.svg" width="98.5%" alt="DevOps and Cloud, my main quest. The pipeline I use today: push with Git, CI gates on GitHub Actions and Jenkins with Trivy, gitleaks and CodeQL, package with Docker, provision with Terraform, deploy with Kubernetes and Helm, serve with Nginx on Linux. Next on the road: AWS, Google Cloud, Azure, Prometheus, Grafana"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-languages-dark.svg"><img src="assets/stack-languages-light.svg" width="49%" alt="Languages: C#, Python, TypeScript, JavaScript, Java, Go, Dart, C++, Bash, PowerShell"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-apps-dark.svg"><img src="assets/stack-apps-light.svg" width="49%" alt="Apps and games: React, Next.js, Vite, Tailwind CSS, Three.js, HTML, CSS, Flutter, Unity"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-backend-dark.svg"><img src="assets/stack-backend-light.svg" width="49%" alt="Backend: Node.js, Express, FastAPI, Flask, Spring Boot, .NET, Socket.IO"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-backend-dark.svg"><img src="assets/stack-backend-light.svg" width="49%" alt="Backend: Node.js, Express, FastAPI, Flask, Spring Boot, .NET, Socket.IO, RabbitMQ"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-data-dark.svg"><img src="assets/stack-data-light.svg" width="49%" alt="Data and AI: PyTorch, TensorFlow, scikit-learn, OpenCV, NumPy, Pandas, Jupyter, Streamlit, XGBoost, YOLO"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-devops-dark.svg"><img src="assets/stack-devops-light.svg" width="49%" alt="DevOps and Cloud: Docker, Kubernetes, Helm, Terraform, GitHub Actions, Jenkins, Nginx, Linux; next: AWS, Google Cloud, Azure, Prometheus, Grafana"></picture>
-  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-stores-dark.svg"><img src="assets/stack-stores-light.svg" width="49%" alt="Data stores and tools: MongoDB, MySQL, Redis, SQLite, RabbitMQ, Neo4j, Git, VS Code, IntelliJ IDEA, Postman, Pytest, Playwright"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-stores-dark.svg"><img src="assets/stack-stores-light.svg" width="49%" alt="Databases: MongoDB, MySQL, Redis, SQLite, Neo4j"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-tools-dark.svg"><img src="assets/stack-tools-light.svg" width="49%" alt="Everyday tools: VS Code, IntelliJ IDEA, Postman, Pytest, Playwright"></picture>
 </p>
 
 <picture>

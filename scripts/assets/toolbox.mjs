@@ -7,7 +7,7 @@ import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, s
 
 const W = 600;
 const PER_ROW = 5;
-const TINTS = { languages: PAPER.blue, apps: PAPER.lavender, backend: PAPER.peach, data: PAPER.mint, devops: PAPER.sage, stores: PAPER.butter };
+const TINTS = { languages: PAPER.blue, apps: PAPER.lavender, backend: PAPER.peach, data: PAPER.mint, stores: PAPER.butter, tools: PAPER.rose };
 
 export const toolboxHeight = (group) => 112 + Math.ceil(group.items.length / PER_ROW) * 118 + 10;
 

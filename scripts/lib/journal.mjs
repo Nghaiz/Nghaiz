@@ -78,7 +78,7 @@ export function tape(x, y, rot, colorKey = 'rose', w = 74, h = 22) {
 export function sticker(tone, { x, y, w, h, fill, rot = 0, delay = 0, r = 16, border = 4, dashed = false, content = '' }) {
   const t = TONES[tone];
   const edge = dashed
-    ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#FFFBF3" fill-opacity=".55" stroke="${t.ink}" stroke-opacity=".45" stroke-width="1.6" stroke-dasharray="5 5"/>`
+    ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#FFFBF3" fill-opacity=".82" stroke="${t.ink}" stroke-opacity=".45" stroke-width="1.6" stroke-dasharray="5 5"/>`
     : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#FFFBF3"/>`;
   const face = dashed ? '' : `<rect x="${x + border}" y="${y + border}" width="${w - 2 * border}" height="${h - 2 * border}" rx="${r - 3}" fill="${fill}"/><rect x="${x + border}" y="${y + border}" width="${w - 2 * border}" height="${h - 2 * border}" rx="${r - 3}" fill="url(#grainFill)" opacity=".5"/>`;
   return `<g transform="rotate(${rot} ${fmt(x + w / 2)} ${fmt(y + h / 2)})"><g class="place" style="animation-delay:${fmt(delay)}s">

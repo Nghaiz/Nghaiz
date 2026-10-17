@@ -17,7 +17,7 @@ export function rng(seed) {
 }
 
 /** Respect prefers-reduced-motion everywhere: freeze loops, show the final state. */
-const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}}';
+const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}.ul{stroke-dashoffset:0!important}}';
 
 export function doc({ width, height, title, desc = '', style = '', defs = '', body }) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="t d">
