@@ -1,12 +1,13 @@
-// "The last 31 days" card: daily contributions as a glowing comet line over a soft aurora area,
-// with the busiest day marked.
-import { C } from '../lib/theme.mjs';
-import { text } from '../lib/type.mjs';
-import { doc, nightCard, glowing, fmt } from '../lib/svg.mjs';
-import { num, cardTitle } from './overview.mjs';
+// "The last 31 days" journal page: a pencil line on graph paper, with a handwritten note and an
+// arrow pointing at the busiest day.
+import { words as text } from '../lib/type.mjs';
+import { doc, fmt } from '../lib/svg.mjs';
+import { PAPER } from '../lib/doodles.mjs';
+import { TONES, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, inkStar, inkArrow } from '../lib/journal.mjs';
+import { num, day } from './overview.mjs';
 
 const W = 1200;
-const H = 380;
+const H = 390;
 const DAYS = 31;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
@@ -23,50 +24,51 @@ function smooth(pts) {
   return d;
 }
 
-export function activityCard(d) {
-  const card = nightCard({ w: W, h: H, seed: 9 });
+export function activityCard(d, tone) {
+  const t = TONES[tone];
   const days = d.days.slice(-DAYS);
   const total = days.reduce((s, x) => s + x.contributionCount, 0);
   const max = Math.max(1, ...days.map((x) => x.contributionCount));
-  const X0 = 50;
-  const X1 = W - 50;
-  const TOPY = 150;
-  const BASE = 314;
+  const GX0 = 40;
+  const GX1 = W - 40;
+  const GY0 = 112;
+  const GY1 = 330;
+  const X0 = GX0 + 30;
+  const X1 = GX1 - 30;
+  const TOPY = GY0 + 40;
+  const BASE = GY1 - 14;
   const pts = days.map((x, i) => [X0 + ((X1 - X0) * i) / (days.length - 1), BASE - (x.contributionCount / max) * (BASE - TOPY)]);
   const line = smooth(pts);
-  const area = `${line}L${X1} ${BASE}L${X0} ${BASE}Z`;
+  let grid = '';
+  for (let x = GX0 + 20; x < GX1; x += 20) grid += `M${x} ${GY0}V${GY1}`;
+  for (let y = GY0 + 20; y < GY1; y += 20) grid += `M${GX0} ${y}H${GX1}`;
   const peak = days.reduce((b, x, i) => (x.contributionCount > days[b].contributionCount ? i : b), 0);
   const [px, py] = pts[peak];
   const [, pm, pd] = days[peak].date.split('-').map(Number);
-  const flip = px > W - 300;
-  // "95 on Oct 15", always read left to right; placed left of the peak when it sits near the edge
-  const numW = text(`${days[peak].contributionCount}`, { font: 'mincho', size: 34 }).width;
-  const dayW = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'fuzzy', size: 20 }).width;
-  const lx = flip ? px - 20 - (numW + 10 + dayW) : px + 20;
-  const peakNum = text(`${days[peak].contributionCount}`, { font: 'mincho', size: 34, x: lx, y: py - 8 });
-  const peakDay = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'fuzzy', size: 20, x: lx + numW + 10, y: py - 8 });
+  const left = px > W / 2;
+  const nx = left ? px - 290 : px + 70;
+  const n1 = text('best of the month!', { font: 'fuzzy', size: 20, x: nx, y: py + 6 });
+  const n2 = text(`${days[peak].contributionCount} on ${MONTHS[pm - 1]} ${pd}`, { font: 'fuzzyR', size: 16, x: nx, y: py + 30 });
+  const arrow = left ? inkArrow(nx + n1.width + 12, py, px - 16, py - 6, t.squiggle, -26) : inkArrow(nx - 12, py, px + 16, py - 6, t.squiggle, -26);
   const ticks = days
     .map((x, i) => {
       if (i % 5 !== 0 && i !== days.length - 1) return '';
       const [, m, dd] = x.date.split('-').map(Number);
-      const t = text(i === 0 || dd === 1 ? `${MONTHS[m - 1]} ${dd}` : `${dd}`, { font: 'minchoM', size: 17, x: pts[i][0], y: H - 26, anchor: 'middle' });
-      return `<path d="${t.d}" fill="${C.faint}"/>`;
+      const tk = text(i === 0 || dd === 1 ? `${MONTHS[m - 1]} ${dd}` : `${dd}`, { font: 'fuzzyR', size: 15, x: pts[i][0], y: H - 26, anchor: 'middle' });
+      return `${tk.paint(`${t.faint}`)}`;
     })
     .join('');
-  const style = `${card.css}
-    @keyframes draw{to{stroke-dashoffset:0}} .line{stroke-dasharray:3200;stroke-dashoffset:3200;animation:draw 2.4s ease-out .2s forwards}
-    @keyframes fade{0%{opacity:0}100%{opacity:1}} .area{animation:fade 1.4s ease-out 1s both}.late{animation:fade .8s ease-out 2.2s both}
-    @keyframes pulse{0%,100%{transform:scale(1);opacity:.6}50%{transform:scale(2.2);opacity:0}} .pulse{transform-box:fill-box;transform-origin:center;animation:pulse 2.2s ease-out infinite}`;
-  const defs = `${card.defs}
-    <linearGradient id="areaG" x1="0" y1="${TOPY}" x2="0" y2="${BASE}" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#7FD6F5" stop-opacity=".45"/><stop offset=".6" stop-color="#A88CFF" stop-opacity=".15"/><stop offset="1" stop-color="#A88CFF" stop-opacity="0"/></linearGradient>
-    <linearGradient id="lineG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#A88CFF"/><stop offset=".55" stop-color="#7FD6F5"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
-    <filter id="lineGlow" x="-5%" y="-30%" width="110%" height="160%"><feGaussianBlur stdDeviation="7"/></filter>`;
-  const body = `${card.svg}
-    ${cardTitle('The last 31 days', `${num(total)} contributions`, W)}
-    <path class="area" d="${area}" fill="url(#areaG)"/>
-    <path class="line" d="${line}" fill="none" stroke="#7FD6F5" stroke-width="10" opacity=".55" filter="url(#lineGlow)"/>
-    <path class="line" d="${line}" fill="none" stroke="url(#lineG)" stroke-width="3.5" stroke-linecap="round"/>
-    <g class="late"><circle class="pulse" cx="${fmt(px)}" cy="${fmt(py)}" r="8" fill="#7FD6F5"/><circle cx="${fmt(px)}" cy="${fmt(py)}" r="6" fill="#FFFFFF"/>${glowing(peakNum.d, 'comet', 0.4)}<path d="${peakDay.d}" fill="#FFFFFF"/></g>
-    ${ticks}`;
-  return doc({ width: W, height: H, title: `${num(total)} contributions in the last 31 days`, desc: `Busiest day: ${days[peak].date} with ${days[peak].contributionCount}.`, style, defs, body });
+  const dots = pts.map(([x, y], i) => `<circle class="fadein" style="animation-delay:${fmt(1 + i * 0.03)}s" cx="${fmt(x)}" cy="${fmt(y)}" r="3.2" fill="${t.paper}" stroke="${t.ink}" stroke-width="1.6"/>`).join('');
+  const avg = (total / days.length).toFixed(1);
+  const body = `<g clip-path="url(#card)">${paperBg(tone, { w: W, h: H })}
+    ${cardHeader(tone, { title: 'The last 31 days', note: `${num(total)} contributions, about ${avg} a day`, doodleName: 'mug', tint: PAPER.blue, seed: 8 })}
+    <rect x="${GX0}" y="${GY0}" width="${GX1 - GX0}" height="${GY1 - GY0}" rx="10" fill="${t.paper}" stroke="${t.ink}" stroke-opacity=".18"/>
+    <path d="${grid}" stroke="${t.grid}" stroke-opacity="${t.gridOp * 1.6}" stroke-width="1"/>
+    <g class="fadein" style="animation-delay:.9s"><path d="${line}L${X1} ${BASE}L${X0} ${BASE}Z" fill="${t.marker}" opacity="${t.markerOp * 0.45}"/></g>
+    <path class="ul" style="animation-duration:2.4s;stroke-dasharray:3200;stroke-dashoffset:3200" d="${line}" fill="none" stroke="${t.ink}" stroke-width="2.6" stroke-linecap="round"/>
+    ${dots}
+    <g class="fadein" style="animation-delay:2s">${inkStar(px, py - 22, 11, t.squiggle, 0, 0)}${arrow}${n1.paint(`${t.ink}`)}${n2.paint(`${t.soft}`)}</g>
+    ${ticks}</g>
+    ${paperBorder(tone, { w: W, h: H })}`;
+  return doc({ width: W, height: H, title: `${num(total)} contributions in the last 31 days`, desc: `Busiest day: ${day(days[peak].date)} with ${days[peak].contributionCount}.`, style: JOURNAL_CSS, defs: paperDefs(tone, { w: W, h: H }), body });
 }

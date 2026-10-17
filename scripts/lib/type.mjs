@@ -11,10 +11,12 @@ const GOOGLE_FONTS_RAW = 'https://raw.githubusercontent.com/google/fonts/main/of
 
 const SOURCES = {
   fuzzy: 'fuzzybubbles/FuzzyBubbles-Bold.ttf',
+  fuzzyR: 'fuzzybubbles/FuzzyBubbles-Regular.ttf',
   mont: 'montserratalternates/MontserratAlternates-Regular.ttf',
   montb: 'montserratalternates/MontserratAlternates-SemiBold.ttf',
   mincho: 'shipporiminchob1/ShipporiMinchoB1-Bold.ttf',
   minchoM: 'shipporiminchob1/ShipporiMinchoB1-Medium.ttf',
+  klee: 'kleeone/KleeOne-SemiBold.ttf',
 };
 
 const loaded = new Map();
@@ -76,6 +78,50 @@ export function text(str, { font: key, size, x = 0, y = 0, anchor = 'start', tra
   const x0 = anchor === 'middle' ? x - width / 2 : anchor === 'end' ? x - width : x;
   const d = items.map(({ glyph, x: gx }) => glyph.getPath(x0 + gx, y, size).toPathData(1)).join('');
   return { d, width, x0 };
+}
+
+// ---------------------------------------------------------------- shared glyphs
+// A handwriting font has many outline points per letter, and a card repeats the same letters
+// hundreds of times. words() defines each glyph once per document (in font units, so the path
+// data is integers) and places every letter as a short <use>. doc() collects the definitions.
+
+const glyphDefs = new Map(); // "font|index" → { id, def }
+
+function glyphId(key, glyph) {
+  const k = `${key}|${glyph.index}`;
+  if (!glyphDefs.has(k)) {
+    const upm = font(key).unitsPerEm;
+    const id = `gl${glyphDefs.size}`;
+    glyphDefs.set(k, { id, def: `<path id="${id}" d="${glyph.getPath(0, 0, upm).toPathData(0)}"/>` });
+  }
+  return glyphDefs.get(k).id;
+}
+
+/** Glyph definitions used since the last call, as <defs> content; resets the registry. */
+export function takeGlyphDefs() {
+  const out = [...glyphDefs.values()].map((g) => g.def).join('');
+  glyphDefs.clear();
+  return out;
+}
+
+/**
+ * Like text(), but renders through shared glyph definitions. Returns { width, x0, paint } where
+ * paint(fill, attrs?) gives the markup, e.g. words('Hi', {...}).paint('#333', 'fill-opacity=".7"').
+ */
+export function words(str, { font: key, size, x = 0, y = 0, anchor = 'start', tracking = 0 }) {
+  const { f, items, width } = layout(str, key, size, tracking);
+  const x0 = anchor === 'middle' ? x - width / 2 : anchor === 'end' ? x - width : x;
+  const s = size / f.unitsPerEm;
+  const uses = items
+    .filter(({ glyph }) => glyph.path && glyph.path.commands && glyph.path.commands.length)
+    .map(({ glyph, x: gx }) => `<use href="#${glyphId(key, glyph)}" x="${Math.round((x0 + gx) / s)}" y="${Math.round(y / s)}"/>`)
+    .join('');
+  // paint() owns transform (the glyph scale); wrap the result in a <g> to move or rotate it.
+  const paint = (fill, attrs = '') => {
+    if (/\btransform=/.test(attrs)) throw new Error('words().paint(): wrap in <g transform> instead of passing transform');
+    return `<g fill="${fill}" ${attrs} transform="scale(${+s.toFixed(5)})">${uses}</g>`;
+  };
+  return { width, x0, paint };
 }
 
 /** Same as text() but one entry per visible glyph — for staggered per-letter animation. */

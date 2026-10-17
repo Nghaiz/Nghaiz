@@ -1,62 +1,46 @@
-// "Languages" card: a thick glowing donut whose arcs draw in one after another, and a legend.
-import { C, SERIES } from '../lib/theme.mjs';
-import { text } from '../lib/type.mjs';
-import { doc, nightCard, glowing, fmt } from '../lib/svg.mjs';
-import { cardTitle, IN_CSS } from './overview.mjs';
+// "Languages" journal page: logo stickers, hand-drawn share bars, and how many more there are.
+import { words as text } from '../lib/type.mjs';
+import { doc, fmt } from '../lib/svg.mjs';
+import { doodle, PAPER } from '../lib/doodles.mjs';
+import { TONES, INK, STICKERS, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, sticker, logo } from '../lib/journal.mjs';
 
 const W = 600;
-const H = 360;
+const H = 510;
 // Not hand-written code: HTML here is exported reports, TeX is write-ups, and notebook size is
 // dominated by stored outputs.
 const EXCLUDED = ['HTML', 'TeX', 'Jupyter Notebook'];
-const TOP = 5;
-const VIVID = ['#7FD6F5', '#FF8FB4', '#FFC864', '#A88CFF', '#7FE0B5', '#8A98C8'];
+const TOP = 6;
 
 export function shares(languages) {
   const kept = languages.filter((l) => !EXCLUDED.includes(l.name)).sort((a, b) => b.bytes - a.bytes);
   const total = kept.reduce((s, l) => s + l.bytes, 0);
-  if (!total) return [];
-  const top = kept.slice(0, TOP).map((l) => ({ name: l.name, share: l.bytes / total }));
-  const rest = kept.slice(TOP).reduce((s, l) => s + l.bytes, 0);
-  if (rest > 0) top.push({ name: 'Other', share: rest / total });
-  return top;
+  return total ? kept.map((l) => ({ name: l.name, share: l.bytes / total })) : [];
 }
 
-export function languagesCard(d) {
-  const card = nightCard({ w: W, h: H, seed: 5 });
-  const items = shares(d.languages);
-  const cx = 150;
-  const cy = 218;
-  const R = 82;
-  const circ = 2 * Math.PI * R;
-  let acc = 0;
-  const arcs = items
+export function languagesCard(d, tone) {
+  const t = TONES[tone];
+  const all = shares(d.languages);
+  const top = all.slice(0, TOP);
+  const BAR_X = 96;
+  const BAR_W = 470;
+  const rows = top
     .map((it, i) => {
-      const len = Math.max(it.share * circ - 4, 0.5);
-      const color = VIVID[i % VIVID.length];
-      const arc = `<circle class="arc" cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${color}" stroke-width="24" stroke-dasharray="${fmt(len)} ${fmt(circ)}" stroke-dashoffset="${fmt(-acc)}" transform="rotate(-90 ${cx} ${cy})" style="animation-delay:${fmt(0.2 + i * 0.18)}s"/>`;
-      acc += it.share * circ;
-      return arc;
+      const y = 122 + i * 56;
+      const name = text(it.name, { font: 'fuzzy', size: 19, x: BAR_X, y: y + 18 });
+      const pct = text(`${(it.share * 100).toFixed(1)}%`, { font: 'fuzzy', size: 17, x: BAR_X + BAR_W, y: y + 18, anchor: 'end' });
+      const fillW = Math.max(10, it.share * BAR_W);
+      return `${sticker(tone, { x: 28, y: y - 6, w: 50, h: 50, fill: '#FFFFFF', rot: i % 2 ? 2 : -2, delay: 0.2 + i * 0.1, r: 14, content: logo(it.name, 53, y + 19, 30) })}
+        ${name.paint(`${t.ink}`)}${pct.paint(`${t.soft}`)}
+        <rect x="${BAR_X}" y="${y + 28}" width="${BAR_W}" height="10" rx="5" fill="none" stroke="${t.ink}" stroke-opacity=".25" stroke-width="1.4" stroke-dasharray="3 4"/>
+        <rect class="grow" style="animation-delay:${fmt(0.4 + i * 0.1)}s" x="${BAR_X}" y="${y + 28}" width="${fmt(fillW)}" height="10" rx="5" fill="${STICKERS[i % STICKERS.length]}" stroke="${INK}" stroke-width="1.4"/>`;
     })
     .join('');
-  const pct = text(`${Math.round(items[0].share * 100)}%`, { font: 'mincho', size: 40, x: cx, y: cy + 8, anchor: 'middle' });
-  const name = text(items[0].name, { font: 'fuzzy', size: 18, x: cx, y: cy + 36, anchor: 'middle' });
-  const legend = items
-    .map((it, i) => {
-      const y = 134 + i * 36;
-      const n = text(it.name, { font: 'minchoM', size: 21, x: 310, y });
-      const p = text(`${(it.share * 100).toFixed(1)}%`, { font: 'mincho', size: 21, x: W - 36, y, anchor: 'end' });
-      return `<g class="in" style="animation-delay:${fmt(0.35 + i * 0.08)}s"><circle cx="292" cy="${y - 7}" r="7" fill="${VIVID[i % VIVID.length]}"/><path d="${n.d}" fill="#FFFFFF"/><path d="${p.d}" fill="${C.soft}"/></g>`;
-    })
-    .join('');
-  const style = `${card.css} ${IN_CSS}
-    @keyframes arc{from{stroke-dasharray:0 1000}} .arc{animation:arc 1s ease-out both}`;
-  const defs = `${card.defs}<filter id="ringBlur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="10"/></filter>`;
-  const body = `${card.svg}
-    <g class="in">${cardTitle('Languages', 'public repos, by size')}</g>
-    <g filter="url(#ringBlur)" opacity=".5">${arcs}</g>
-    ${arcs}
-    <g class="in" style="animation-delay:1s">${glowing(pct.d, 'comet', 0.4)}<path d="${name.d}" fill="${C.soft}"/></g>
-    ${legend}`;
-  return doc({ width: W, height: H, title: 'Languages', desc: items.map((i) => `${i.name} ${(i.share * 100).toFixed(1)}%`).join(', '), style, defs, body });
+  const more = all.length - top.length;
+  const foot = text(more > 0 ? `and ${more} more languages along the way` : 'that is all of them, for now', { font: 'fuzzyR', size: 16, x: 82, y: 478 });
+  const body = `<g clip-path="url(#card)">${paperBg(tone, { w: W, h: H })}
+    ${cardHeader(tone, { title: 'Languages', note: 'by code size in my public repos', doodleName: 'code', tint: PAPER.blue, seed: 5 })}
+    ${rows}
+    <g class="fadein" style="animation-delay:1.1s">${doodle('sparkles', { x: 52, y: 470, size: 38, ink: tone === 'night' ? '#F6EEDF' : INK })}${foot.paint(`${t.soft}`)}</g></g>
+    ${paperBorder(tone, { w: W, h: H })}`;
+  return doc({ width: W, height: H, title: 'Languages', desc: top.map((l) => `${l.name} ${(l.share * 100).toFixed(1)}%`).join(', '), style: JOURNAL_CSS, defs: paperDefs(tone, { w: W, h: H }), body });
 }

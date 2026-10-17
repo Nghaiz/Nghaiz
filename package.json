@@ -5,7 +5,8 @@
   "description": "Asset generator for the Nghaiz GitHub profile README (anime theme).",
   "scripts": {
     "build": "node scripts/build-assets.mjs",
-    "stats": "node scripts/build-stats.mjs"
+    "stats": "node scripts/build-stats.mjs",
+    "logos": "node scripts/fetch_logos.mjs"
   },
   "dependencies": {
     "opentype.js": "^1.3.4"

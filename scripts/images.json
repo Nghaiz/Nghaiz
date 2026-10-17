@@ -54,5 +54,33 @@
     "width": 1600,
     "credit": "Weathering With You (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films",
     "link": "https://www.tenkinoko.com/"
+  },
+  {
+    "id": "snap-comet",
+    "source": "wallhaven-e781gr.jpg",
+    "wallhaven": "https://wallhaven.cc/w/e781gr",
+    "crop": [
+      0.22,
+      0,
+      0.82,
+      0.83
+    ],
+    "width": 480,
+    "credit": "Your Name (君の名は。) fanart by 画师JW",
+    "link": "https://www.pixiv.net/artworks/89578796"
+  },
+  {
+    "id": "snap-dawn",
+    "source": "wallhaven-6d7x97.png",
+    "wallhaven": "https://wallhaven.cc/w/6d7x97",
+    "crop": [
+      0.25,
+      0.1,
+      0.65,
+      0.8
+    ],
+    "width": 480,
+    "credit": "Your Name (君の名は。) © 2016 TOHO / CoMix Wave Films",
+    "link": "https://www.kiminona.com/"
   }
 ]
