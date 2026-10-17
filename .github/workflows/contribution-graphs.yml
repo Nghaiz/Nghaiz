@@ -1,0 +1,58 @@
+name: Contribution graphs
+
+on:
+  schedule:
+    - cron: '41 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: contribution-graphs
+  cancel-in-progress: true
+
+jobs:
+  snake:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake.svg?color_snake=#3F7FC8&color_dots=#E9F0FA,#C6DCF2,#8FC0E8,#5B95D6,#3F6FB5
+            dist/snake-dark.svg?palette=github-dark&color_snake=#8FD3E8&color_dots=#161b22,#1B2B55,#2F5E94,#5FA8DA,#8FD3E8
+
+      - uses: crazy-max/ghaction-github-pages@v3.1.0
+        with:
+          target_branch: output
+          build_dir: dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  calendar-3d:
+    needs: snake # both push; run one after the other so they never race on the remote
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: yoshi389111/github-profile-3d-contrib@v0.9.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          SETTING_JSON: .github/3d-night.json
+
+      - name: Commit the calendar
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add profile-3d-contrib/profile-night.svg
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore(graphs): refresh 3D contribution calendar [skip ci]"
+            git pull --rebase
+            git push
+          fi

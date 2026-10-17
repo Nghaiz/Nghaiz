@@ -1,86 +1,86 @@
-// The three supporting stills (no characters in any of them): Suzume's door in the flooded ruins
-// (About), Weathering With You's rainy Shinjuku night (stats banner) and its sunlit hillside street (footer).
+// The supporting stills (no characters in any of them): rainy Tokyo at night (About), dawn above
+// the clouds (stats banner) and a sunlit hillside street (footer).
 import { text } from '../lib/type.mjs';
 import { doc, rng, fmt } from '../lib/svg.mjs';
-import { imageLayer, motes, rain, rays, glint, shadowedText } from '../lib/fx.mjs';
+import { imageLayer, motes, rain, bokeh, lightSweep, shootingStars, glint, shadowedText } from '../lib/fx.mjs';
 
-/** About: the lone door standing in the flooded ruins: water glints, drifting light. */
-export function door() {
+/** About: Tokyo from above on a rainy night — rain, blinking aviation lights, drifting mist. */
+export function tokyo() {
   const W = 600;
-  const H = 422;
-  const img = imageLayer('door', W, H, { zoom: 1.05, dur: 30, ox: '42%', oy: '50%' });
-  const light = motes({ count: 26, x0: 40, x1: W - 40, y0: 120, y1: 380, seed: 8, color: '#FFF8E6', rise: 60 });
-  const r = rng(19);
-  let ripples = '';
-  for (let i = 0; i < 34; i++) {
-    const y = fmt(318 + Math.pow(r(), 0.7) * 100);
-    ripples += `<rect class="rp" x="${fmt(r() * W)}" y="${y}" width="${fmt(18 + r() * 60)}" height="1.6" rx="1" fill="#FFFFFF" style="animation-duration:${fmt(3 + r() * 4)}s;animation-delay:${fmt(-r() * 6)}s"/>`;
+  const H = 478;
+  const img = imageLayer('tokyo', W, H, { zoom: 1.05, dur: 32, ox: '57%', oy: '30%' });
+  const drops = rain({ w: W, h: H, count: 120, seed: 31, slant: 0.12 });
+  const r = rng(44);
+  // red aviation lights on the tower crown and a few rooftops
+  const beacons = [[340, 58], [150, 124], [64, 128], [520, 150]]
+    .map(([x, y], i) => `<circle class="bc" cx="${x}" cy="${y}" r="1.8" fill="#FF5A6E" style="animation-delay:${fmt(i * 0.37)}s"/><circle class="bc" cx="${x}" cy="${y}" r="5" fill="#FF5A6E" opacity=".2" style="animation-delay:${fmt(i * 0.37)}s"/>`)
+    .join('');
+  let windows = '';
+  for (let i = 0; i < 40; i++) {
+    windows += `<rect class="win" x="${fmt(r() * W)}" y="${fmt(150 + r() * 320)}" width="2" height="2" fill="#FFE3A3" style="animation-delay:${fmt(-r() * 8)}s;animation-duration:${fmt(3 + r() * 5)}s"/>`;
   }
-  let glints = '';
-  for (let i = 0; i < 7; i++) {
-    glints += `<g transform="translate(${fmt(60 + r() * (W - 120))} ${fmt(322 + r() * 90)})"><g class="gl" style="animation-delay:${fmt(r() * 5)}s">${glint(5 + r() * 4)}</g></g>`;
-  }
-  const style = `${img.css} ${light.css}
-    @keyframes rp{0%,100%{opacity:0;transform:translateX(0)}50%{opacity:.55;transform:translateX(10px)}} .rp{animation:rp ease-in-out infinite}
-    @keyframes gl{0%,100%{transform:scale(.2) rotate(0);opacity:0}50%{transform:scale(1) rotate(45deg);opacity:1}} .gl{transform-box:fill-box;transform-origin:center;animation:gl 3.5s ease-in-out infinite}
-    @keyframes gap{0%,100%{opacity:.25}50%{opacity:.85}} .gap{animation:gap 4s ease-in-out infinite}`;
+  const style = `${img.css} ${drops.css}
+    @keyframes bc{0%,55%,100%{opacity:.15}60%,80%{opacity:1}} .bc{animation:bc 2.4s ease-in-out infinite}
+    @keyframes win{0%,100%{opacity:.1}50%{opacity:.9}} .win{animation:win ease-in-out infinite}
+    @keyframes mist{0%{transform:translateX(-${W}px)}100%{transform:translateX(${W}px)}} .mist{animation:mist 40s linear infinite}`;
   const defs = `<clipPath id="frame"><rect width="${W}" height="${H}" rx="16"/></clipPath>
-    <linearGradient id="gapG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".5" stop-color="#FFF6DA"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>`;
+    <linearGradient id="mistG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFE2FF" stop-opacity="0"/><stop offset=".5" stop-color="#CFE2FF" stop-opacity=".22"/><stop offset="1" stop-color="#CFE2FF" stop-opacity="0"/></linearGradient>`;
   const body = `<g clip-path="url(#frame)">${img.svg}
-    <rect class="gap" x="331" y="196" width="3" height="128" fill="url(#gapG)"/>
-    ${ripples}${glints}${light.svg}</g>`;
-  return doc({ width: W, height: H, title: 'Suzume — the door in the ruins', desc: 'Still from Suzume (© 2022 Suzume Film Partners): a door standing in flooded ruins, with animated water glints and drifting light.', style, defs, body });
+    <rect class="mist" x="0" y="180" width="${W}" height="120" fill="url(#mistG)"/>
+    ${windows}${beacons}${drops.svg}</g>`;
+  return doc({ width: W, height: H, title: 'Tokyo on a rainy night', desc: 'Still from Your Name (© 2016 TOHO / CoMix Wave Films) with animated rain and blinking aviation lights.', style, defs, body });
 }
 
-/** Stats banner: rainy Shinjuku at night, with its section title. */
-export function rainBanner({ title, jp }) {
+/** Stats banner: dawn above a sea of clouds with the falling comet; section title on the sky. */
+export function dawnBanner({ title, jp }) {
   const W = 1200;
-  const H = 338;
-  const img = imageLayer('rain', W, H, { zoom: 1.05, dur: 26, ox: '50%', oy: '35%' });
-  const drops = rain({ w: W, h: H, count: 150, seed: 13 });
-  const t = text(title, { font: 'gentium', size: 44, x: 52, y: 262 });
-  const j = text(jp, { font: 'klee', size: 24, x: 56, y: 302 });
-  const st = shadowedText(`${t.d}${j.d}`, '#FFFFFF', { id: 'shT', blur: 7, opacity: 0.7 });
-  const style = `${img.css} ${drops.css}
-    @keyframes neon{0%,100%{opacity:.18}45%{opacity:.4}50%{opacity:.12}55%{opacity:.38}} .neon{animation:neon 6s ease-in-out infinite}
+  const H = 352;
+  const img = imageLayer('dawn', W, H, { zoom: 1.04, dur: 30, ox: '40%', oy: '60%' });
+  const sweep = lightSweep({ w: W, h: H, opacity: 0.18, dur: 11, color: '#FFF1D6' });
+  const sparks = shootingStars([[606, 146, -26, 60, 1], [600, 120, -30, 80, 3.5], [612, 90, -22, 70, 6]], { prefix: 'sp', period: 7, len: 26, color: '#FFE9C4' });
+  const sky = motes({ count: 18, x0: 0, x1: W, y0: 230, y1: 340, seed: 6, color: '#FFF6E0', rise: 30, max: 1.6 });
+  const t = text(title, { font: 'vibes', size: 64, x: 54, y: 96 });
+  const j = text(jp, { font: 'mincho', size: 20, x: 60 + t.width + 14, y: 92 });
+  const st = shadowedText(`${t.d}${j.d}`, '#FFFFFF', { id: 'shT', blur: 6, opacity: 0.6, shadow: '#0A1A4A' });
+  const style = `${img.css} ${sweep.css} ${sparks.css} ${sky.css}
+    @keyframes sun{0%,100%{transform:scale(1);opacity:.65}50%{transform:scale(1.18);opacity:1}} .sun{transform-box:fill-box;transform-origin:center;animation:sun 6s ease-in-out infinite}
+    @keyframes gl{0%,100%{transform:scale(.4) rotate(0);opacity:.3}50%{transform:scale(1) rotate(45deg);opacity:1}} .gl{transform-box:fill-box;transform-origin:center;animation:gl 3s ease-in-out infinite}
     @keyframes rise{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}} .rise{animation:rise 1.4s ease-out .3s both}`;
   const defs = `<clipPath id="frame"><rect width="${W}" height="${H}" rx="18"/></clipPath>
-    <radialGradient id="neonG"><stop offset="0" stop-color="#FF7FB8"/><stop offset="1" stop-color="#FF7FB8" stop-opacity="0"/></radialGradient><radialGradient id="neonC"><stop offset="0" stop-color="#7FE3FF"/><stop offset="1" stop-color="#7FE3FF" stop-opacity="0"/></radialGradient>
-    <linearGradient id="foot" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#0A1838" stop-opacity="0"/><stop offset="1" stop-color="#0A1838" stop-opacity=".55"/></linearGradient>
-    ${st.defs}`;
+    <radialGradient id="sunG"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".25" stop-color="#FFE7B8" stop-opacity=".6"/><stop offset="1" stop-color="#FFB98A" stop-opacity="0"/></radialGradient>
+    ${sweep.defs}${sparks.defs}${st.defs}`;
   const body = `<g clip-path="url(#frame)">${img.svg}
-    <ellipse class="neon" cx="240" cy="60" rx="200" ry="120" fill="url(#neonG)"/><ellipse class="neon" cx="560" cy="110" rx="160" ry="110" fill="url(#neonC)" style="animation-delay:-2.5s"/><ellipse class="neon" cx="1010" cy="120" rx="180" ry="120" fill="url(#neonG)" style="animation-delay:-4s"/>
-    ${drops.svg}
-    <rect width="${W}" height="${H}" fill="url(#foot)"/>
+    <ellipse class="sun" cx="480" cy="211" rx="190" ry="90" fill="url(#sunG)"/>
+    ${sweep.svg}${sky.svg}${sparks.svg}
+    <g transform="translate(606 146)"><g class="gl">${glint(9, '#FFF6E0')}</g></g>
     <g class="rise">${st.svg}</g></g>`;
-  return doc({ width: W, height: H, title: `${title} · ${jp}`, desc: 'Still from Weathering With You (© 2019 Weathering With You Film Partners): rainy Shinjuku at night, with animated rain and flickering neon.', style, defs, body });
+  return doc({ width: W, height: H, title: `${title} · ${jp}`, desc: 'Still from Your Name (© 2016 TOHO / CoMix Wave Films): dawn above the clouds, with a breathing sun and a light sweep.', style, defs, body });
 }
 
-/** Footer: the sunlit hillside street: turning light rays, a breathing lens flare, floating motes, thank-you. */
+/** Footer: the sunlit hillside street — komorebi light discs, a warm glow, the thank-you. */
 export function sunlight() {
   const W = 1200;
   const H = 317;
   const img = imageLayer('sunlight', W, H, { zoom: 1.04, dur: 30, ox: '75%', oy: '40%' });
-  const beams = rays({ cx: 1060, cy: -30, count: 18, len: 900 });
-  const light = motes({ count: 30, x0: 20, x1: W - 20, y0: 40, y1: 300, seed: 4, color: '#FFFFFF', rise: 50 });
-  const a = text('Cảm ơn bạn đã ghé thăm!', { font: 'gentium', size: 42, x: 56, y: 196 });
-  const b = text('Thanks for stopping by', { font: 'gentium', size: 22, x: 58, y: 236 });
-  const c = text('またね', { font: 'klee', size: 22, x: 58 + b.width + 16, y: 235 });
-  const sa = shadowedText(a.d, '#FFFFFF', { id: 'shA', blur: 7, opacity: 0.55, shadow: '#0B2A20' });
-  const sb = shadowedText(`${b.d}${c.d}`, '#F2F7FF', { id: 'shB', blur: 5, opacity: 0.55, shadow: '#0B2A20' });
-  const style = `${img.css} ${beams.css} ${light.css}
-    @keyframes core{0%,100%{transform:scale(1);opacity:.7}50%{transform:scale(1.25);opacity:1}} .core{transform-box:fill-box;transform-origin:center;animation:core 4s ease-in-out infinite}
+  const leaves = bokeh({ count: 26, x0: 420, x1: W, y0: 0, y1: 230, seed: 9 });
+  const sweep = lightSweep({ w: W, h: H, opacity: 0.16, dur: 12, color: '#FFF4D6', prefix: 'fsw' });
+  const a = text('Cảm ơn bạn đã ghé thăm!', { font: 'vibes', size: 68, x: 54, y: 168 });
+  const b = text('THANKS FOR STOPPING BY   ·   ', { font: 'montb', size: 14, x: 60, y: 214, tracking: 3 });
+  const c = text('またね', { font: 'mincho', size: 18, x: 60 + b.width, y: 215 });
+  const sa = shadowedText(a.d, '#FFFFFF', { id: 'shA', blur: 7, opacity: 0.6, shadow: '#06140E' });
+  const sb = shadowedText(`${b.d}${c.d}`, '#FFFFFF', { id: 'shB', blur: 4, opacity: 0.7, shadow: '#06140E' });
+  const style = `${img.css} ${leaves.css} ${sweep.css}
+    @keyframes warm{0%,100%{opacity:.45}50%{opacity:.8}} .warm{animation:warm 7s ease-in-out infinite}
     @keyframes rise{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}} .rise{animation:rise 1.4s ease-out both}`;
   const defs = `<clipPath id="frame"><rect width="${W}" height="${H}" rx="18"/></clipPath>
-    <linearGradient id="left" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#071410" stop-opacity=".5"/><stop offset=".45" stop-color="#071410" stop-opacity="0"/></linearGradient>
-    <radialGradient id="coreG"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".25" stop-color="#FFF6DA" stop-opacity=".8"/><stop offset="1" stop-color="#FFF6DA" stop-opacity="0"/></radialGradient>
-    ${beams.defs}${sa.defs}${sb.defs}`;
+    <linearGradient id="left" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#05110C" stop-opacity=".62"/><stop offset=".5" stop-color="#05110C" stop-opacity="0"/></linearGradient>
+    <radialGradient id="warmG" cx="1" cy="0" r="1"><stop offset="0" stop-color="#FFE2A8" stop-opacity=".55"/><stop offset=".6" stop-color="#FFE2A8" stop-opacity="0"/></radialGradient>
+    ${leaves.defs}${sweep.defs}${sa.defs}${sb.defs}`;
   const body = `<g clip-path="url(#frame)">${img.svg}
     <rect width="${W}" height="${H}" fill="url(#left)"/>
-    ${beams.svg}
-    <circle class="core" cx="378" cy="262" r="46" fill="url(#coreG)"/>
-    ${light.svg}
+    <rect class="warm" width="${W}" height="${H}" fill="url(#warmG)"/>
+    ${sweep.svg}${leaves.svg}
     <g class="rise" style="animation-delay:.3s">${sa.svg}</g>
     <g class="rise" style="animation-delay:.9s">${sb.svg}</g></g>`;
-  return doc({ width: W, height: H, title: 'Cảm ơn bạn đã ghé thăm! Thanks for stopping by.', desc: 'Still from Weathering With You (© 2019 Weathering With You Film Partners): a sunlit hillside street, with animated light rays.', style, defs, body });
+  return doc({ width: W, height: H, title: 'Cảm ơn bạn đã ghé thăm! Thanks for stopping by.', desc: 'Still from Weathering With You (© 2019 Weathering With You Film Partners): a sunlit street with soft komorebi light.', style, defs, body });
 }

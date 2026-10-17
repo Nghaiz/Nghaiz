@@ -7,33 +7,33 @@ import { fileURLToPath } from 'node:url';
 import { loadFonts } from './lib/type.mjs';
 import { profile } from './profile.config.mjs';
 import { hero } from './assets/hero.mjs';
-import { door, rainBanner, sunlight } from './assets/scenes.mjs';
+import { tokyo, dawnBanner, sunlight } from './assets/scenes.mjs';
 import { heading } from './assets/heading.mjs';
 import { project } from './assets/project.mjs';
-import { toolbox } from './assets/toolbox.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = path.join(ROOT, 'assets');
 
 const HEADINGS = {
-  about: { title: 'About me', jp: '自己紹介', seed: 1 },
-  toolbox: { title: 'My toolbox', jp: '道具箱', seed: 2 },
-  projects: { title: 'Things I have built', jp: '作ったもの', seed: 3 },
-  garden: { title: 'Contribution snake', jp: '貢献', seed: 5 },
+  about: { title: 'About me', jp: '自己紹介' },
+  stack: { title: 'Tech stack', jp: '技術' },
+  projects: { title: 'Projects', jp: '作品' },
+  graph: { title: 'Contribution graph', jp: '足あと' },
 };
 
 const builders = {
   'hero.svg': () => hero(profile),
-  'door.svg': () => door(),
-  'stats-banner.svg': () => rainBanner({ title: 'Notes from this year', jp: '一年の記録' }),
+  'tokyo.svg': () => tokyo(),
+  'stats-banner.svg': () => dawnBanner({ title: 'Notes from this year', jp: '一年の記録' }),
   'footer.svg': () => sunlight(),
-  'toolbox.svg': () => toolbox(profile.toolbox),
 };
 for (const [key, h] of Object.entries(HEADINGS)) {
   builders[`heading-${key}.svg`] = () => heading(h, 'light');
   builders[`heading-${key}-dark.svg`] = () => heading(h, 'dark');
 }
-for (const p of profile.projects) builders[`${p.file}.svg`] = () => project(p, profile.login);
+profile.projects.forEach((p, i) => {
+  builders[`${p.file}.svg`] = () => project(p, profile.login, 11 + i);
+});
 
 await loadFonts();
 fs.mkdirSync(OUT, { recursive: true });

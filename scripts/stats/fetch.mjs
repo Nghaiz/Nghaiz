@@ -6,6 +6,7 @@ query($login:String!){
   user(login:$login){
     login
     name
+    createdAt
     followers{ totalCount }
     contributionsCollection{
       totalCommitContributions
@@ -20,6 +21,57 @@ query($login:String!){
     repositoriesContributedTo(first:1, contributionTypes:[COMMIT,PULL_REQUEST,ISSUE,REPOSITORY]){ totalCount }
   }
 }`;
+
+// One calendar year at a time — contributionsCollection spans at most a year per call.
+const CALENDAR_QUERY = `
+query($login:String!, $from:DateTime!, $to:DateTime!){
+  user(login:$login){
+    contributionsCollection(from:$from, to:$to){
+      contributionCalendar{ weeks{ contributionDays{ date contributionCount } } }
+    }
+  }
+}`;
+
+/** Every contribution day since the account was created, oldest first. */
+async function fetchAllDays(token, login, createdAt) {
+  const now = new Date();
+  const days = new Map();
+  for (let y = new Date(createdAt).getUTCFullYear(); y <= now.getUTCFullYear(); y++) {
+    const from = new Date(Math.max(Date.UTC(y, 0, 1), new Date(createdAt).getTime()));
+    const to = new Date(Math.min(Date.UTC(y, 11, 31, 23, 59, 59), now.getTime()));
+    const { contributionsCollection } = await gql(token, CALENDAR_QUERY, { login, from: from.toISOString(), to: to.toISOString() });
+    for (const w of contributionsCollection.contributionCalendar.weeks) {
+      for (const d of w.contributionDays) days.set(d.date, d.contributionCount);
+    }
+  }
+  return [...days.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => ({ date, count }));
+}
+
+/** Current and longest runs of days with at least one contribution. Today may still be empty. */
+export function streaks(allDays) {
+  let longest = { length: 0, start: null, end: null };
+  let run = { length: 0, start: null };
+  for (const d of allDays) {
+    if (d.count > 0) {
+      run = run.length ? { length: run.length + 1, start: run.start } : { length: 1, start: d.date };
+      if (run.length > longest.length) longest = { length: run.length, start: run.start, end: d.date };
+    } else run = { length: 0, start: null };
+  }
+  const last = allDays.length - 1;
+  let i = allDays[last]?.count > 0 ? last : last - 1; // an empty "today" doesn't break the streak
+  const end = allDays[i]?.date ?? null;
+  let length = 0;
+  while (i >= 0 && allDays[i].count > 0) {
+    length++;
+    i--;
+  }
+  return {
+    current: { length, start: length ? allDays[i + 1].date : null, end: length ? end : null },
+    longest,
+    total: allDays.reduce((s, d) => s + d.count, 0),
+    since: allDays[0]?.date ?? null,
+  };
+}
 
 // privacy: PUBLIC keeps local runs (full-scope gh token) identical to CI runs (public-only GITHUB_TOKEN).
 const REPOS_QUERY = `
@@ -103,6 +155,7 @@ export async function fetchProfile(login, token) {
     issues: cc.totalIssueContributions,
     restricted: cc.restrictedContributionsCount,
     days, // [{ date: 'YYYY-MM-DD', contributionCount }]
+    streak: streaks(await fetchAllDays(token, login, user.createdAt)),
     languages: [...langBytes.entries()].map(([name, v]) => ({ name, bytes: v.bytes, color: v.color })),
   };
 }

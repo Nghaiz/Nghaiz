@@ -17,14 +17,15 @@ export function hero(profile) {
   const shards = shootingStars([[316, 196, -150, 150, 2.8], [324, 192, -90, 190, 8.2]], { prefix: 'sh', period: 11, len: 70, color: '#CFF4FF' });
 
   const X = 1140;
-  const helloJp = text(profile.greetingJp, { font: 'klee', size: 21, x: X, y: 243, anchor: 'end' });
-  const hello = text(`${profile.greeting}  ·  `, { font: 'gentium', size: 22, x: X - helloJp.width, y: 244, anchor: 'end' });
-  const name = text(profile.name, { font: 'gentium', size: 62, x: X, y: 314, anchor: 'end' });
-  const tag = text(profile.tagline, { font: 'gentium', size: 22, x: X, y: 354, anchor: 'end' });
-  const jp = text(profile.titleJp, { font: 'yuji', size: 26, x: X, y: 400, anchor: 'end' });
-  const t1 = shadowedText(name.d, '#FFFFFF', { id: 'shName', blur: 8, opacity: 0.6 });
-  const t2 = shadowedText(`${hello.d}${helloJp.d}${tag.d}`, '#E4ECFF', { id: 'shSmall', blur: 5, opacity: 0.55 });
-  const t3 = shadowedText(jp.d, '#FFD3DF', { id: 'shJp', blur: 5, opacity: 0.55 });
+  const helloJp = text(profile.greetingJp, { font: 'mincho', size: 20, x: X, y: 226, anchor: 'end' });
+  const hello = text(`${profile.greeting.toUpperCase()}   ·   `, { font: 'montb', size: 15, x: X - helloJp.width, y: 224, anchor: 'end', tracking: 3 });
+  const name = text(profile.name, { font: 'vibes', size: 104, x: X, y: 318, anchor: 'end' });
+  const tag = text(profile.tagline.toUpperCase(), { font: 'montb', size: 15, x: X, y: 362, anchor: 'end', tracking: 3 });
+  const jp = text(profile.titleJp, { font: 'mincho', size: 24, x: X, y: 408, anchor: 'end' });
+  const t1 = shadowedText(name.d, '#FFFFFF', { id: 'shName', blur: 10, opacity: 0.55 });
+  const t2 = shadowedText(`${hello.d}${helloJp.d}${tag.d}`, '#FFFFFF', { id: 'shSmall', blur: 4, opacity: 0.7 });
+  const t3 = shadowedText(jp.d, '#FFC7D6', { id: 'shJp', blur: 4, opacity: 0.7 });
+  const nameGlow = `<path d="${name.d}" fill="#8FD3E8" opacity=".55" filter="url(#nameGlow)"/>`;
 
   let glints = '';
   for (const [x, y, s, d] of [[560, 210, 7, 0], [880, 120, 5, 1.7], [140, 90, 6, 3.1], [1080, 170, 4, 2.4]]) {
@@ -51,6 +52,7 @@ export function hero(profile) {
     <radialGradient id="sunG"><stop offset="0" stop-color="#FFE6B8" stop-opacity=".9"/><stop offset=".4" stop-color="#FF9E8A" stop-opacity=".35"/><stop offset="1" stop-color="#FF9E8A" stop-opacity="0"/></radialGradient>
     <linearGradient id="shade" x1="1" y1="0" x2="0" y2="0"><stop offset="0" stop-color="#0A1024" stop-opacity=".45"/><stop offset=".45" stop-color="#0A1024" stop-opacity="0"/></linearGradient>
     <filter id="soft" x="-10%" y="-50%" width="120%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+    <filter id="nameGlow" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="14"/></filter>
     ${shoot.defs}${shards.defs}${t1.defs}${t2.defs}${t3.defs}`;
   const body = `
   <g clip-path="url(#frame)">
@@ -67,7 +69,7 @@ export function hero(profile) {
     ${shoot.svg}
     ${glints}
     <g class="rise" style="animation-delay:.3s">${t2.svg}</g>
-    <g class="rise" style="animation-delay:.8s">${t1.svg}</g>
+    <g class="rise" style="animation-delay:.8s">${nameGlow}${t1.svg}</g>
     <g class="rise" style="animation-delay:1.6s">${t3.svg}</g>
   </g>`;
   return doc({ width: W, height: H, title: `${profile.name} · ${profile.tagline}`, desc: 'Comet over a sea of clouds at dusk (Your Name fanart by 画师JW) with an animated comet, stars and shooting stars.', style, defs, body });

@@ -3,9 +3,9 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/Nghaiz?tab=followers"><img src="https://img.shields.io/github/followers/Nghaiz?label=followers&style=flat-square&labelColor=1E2A4A&color=6FA8DC" alt="followers"></a>
-  <img src="https://komarev.com/ghpvc/?username=Nghaiz&label=profile%20views&color=6FA8DC&style=flat-square" alt="profile views">
-  <a href="https://github.com/Nghaiz?tab=repositories"><img src="https://img.shields.io/github/stars/Nghaiz?label=stars&style=flat-square&labelColor=1E2A4A&color=F08A7E" alt="stars"></a>
+  <a href="https://github.com/Nghaiz?tab=followers"><img src="https://img.shields.io/github/followers/Nghaiz?label=followers&style=flat-square&labelColor=0A0F26&color=3F7FC8" alt="followers"></a>
+  <img src="https://komarev.com/ghpvc/?username=Nghaiz&label=profile%20views&color=3F7FC8&style=flat-square" alt="profile views">
+  <a href="https://github.com/Nghaiz?tab=repositories"><img src="https://img.shields.io/github/stars/Nghaiz?label=stars&style=flat-square&labelColor=0A0F26&color=F4A6B7" alt="stars"></a>
 </p>
 
 <picture>
@@ -13,7 +13,7 @@
   <img src="assets/heading-about.svg" width="100%" alt="About me">
 </picture>
 
-<img align="right" width="400" src="assets/door.svg" alt="A door standing in flooded ruins (Suzume)">
+<img align="right" width="380" src="assets/tokyo.svg" alt="Tokyo from above on a rainy night (Your Name)">
 
 **Xin chào!** I'm Nghĩa, an IT student at PTIT in Hà Nội.
 
@@ -23,25 +23,26 @@ The rest goes to AI work that has to run somewhere real: RAG and GraphRAG over V
 
 I once wrote Snake in 8086 assembly. I don't recommend it.
 
-Happy to talk about sockets, Unity, C# or Python.
-
 <br clear="right">
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/heading-toolbox-dark.svg">
-  <img src="assets/heading-toolbox.svg" width="100%" alt="My toolbox">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/heading-stack-dark.svg">
+  <img src="assets/heading-stack.svg" width="100%" alt="Tech stack">
 </picture>
 
-<img src="assets/toolbox.svg" width="100%" alt="Languages: C#, Python, TypeScript, Java, C++, Go, JavaScript, Dart. Game and systems: Unity 6, .NET, TCP/UDP sockets, Assembly 8086, ShaderLab. AI and data: NumPy, Jupyter, RAG/GraphRAG, Neo4j, Qdrant, XGBoost. Web and app: Node.js, Express, React, MongoDB, Flutter, REST APIs. Tools: Git, GitHub Actions, Docker, PowerShell, Linux, LaTeX.">
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=cs,unity,dotnet,cpp,java,go,py,ts,js,dart&theme=dark" alt="C#, Unity, .NET, C++, Java, Go, Python, TypeScript, JavaScript, Dart"><br>
+  <img src="https://skillicons.dev/icons?i=nodejs,express,react,mongodb,flutter,docker,githubactions,git,linux,powershell&theme=dark" alt="Node.js, Express, React, MongoDB, Flutter, Docker, GitHub Actions, Git, Linux, PowerShell">
+</p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/heading-projects-dark.svg">
-  <img src="assets/heading-projects.svg" width="100%" alt="Things I have built">
+  <img src="assets/heading-projects.svg" width="100%" alt="Projects">
 </picture>
 
 <p align="center">
   <a href="https://github.com/Nghaiz/LTM"><img src="assets/project-ironfront.svg" width="49%" alt="Ironfront: Reborn"></a>
-  <a href="https://github.com/ngtukien/IOT-CV"><img src="assets/project-drone.svg" width="49%" alt="IOT-CV Drone"></a>
+  <a href="https://github.com/ngtukien/IOT-CV"><img src="assets/project-drone.svg" width="49%" alt="IOT-CV"></a>
   <a href="https://github.com/ngtukien/Vietnam-Real-Estates"><img src="assets/project-realestate.svg" width="49%" alt="Vietnam Real Estates"></a>
   <a href="https://github.com/Nghaiz/Intelligent-System-Development"><img src="assets/project-intelligent.svg" width="49%" alt="Intelligent Systems"></a>
 </p>
@@ -49,15 +50,18 @@ Happy to talk about sockets, Unity, C# or Python.
 <img src="assets/stats-banner.svg" width="100%" alt="Notes from this year">
 
 <p align="center">
-  <img src="assets/generated/year.svg" width="49%" alt="Contributions this year">
+  <img src="assets/generated/overview.svg" width="49%" alt="Year in review">
   <img src="assets/generated/languages.svg" width="49%" alt="Languages">
+  <img src="assets/generated/streak.svg" width="100%" alt="Contribution streak">
   <img src="assets/generated/activity.svg" width="100%" alt="Contributions in the last 31 days">
 </p>
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/heading-garden-dark.svg">
-  <img src="assets/heading-garden.svg" width="100%" alt="Contribution snake">
+  <source media="(prefers-color-scheme: dark)" srcset="assets/heading-graph-dark.svg">
+  <img src="assets/heading-graph.svg" width="100%" alt="Contribution graph">
 </picture>
+
+<img src="profile-3d-contrib/profile-night.svg" width="100%" alt="3D contribution calendar">
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Nghaiz/Nghaiz/output/snake-dark.svg">
@@ -71,13 +75,13 @@ Happy to talk about sockets, Unity, C# or Python.
 
 <sub>
 
-The scenes are stills and fanart from Makoto Shinkai's films. All rights stay with their owners; they are used here as fan tribute, with credit.
+The scenes are stills and fanart from Makoto Shinkai's films. All rights stay with their owners; they are used here as a fan tribute, with credit.
 
 - Header: *Your Name* (君の名は。) fanart by [画师JW](https://www.pixiv.net/artworks/89578796)
-- About: *Suzume* (すずめの戸締まり) © 2022 “Suzume” Film Partners / CoMix Wave Films
-- Stats banner and footer: *Weathering With You* (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films
+- About and stats banner: *Your Name* (君の名は。) © 2016 TOHO / CoMix Wave Films
+- Footer: *Weathering With You* (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films
 
-The motion on top of them (comet, stars, rain, light) and every card on this page are generated SVGs. `npm run build` redraws the art from [`scripts/profile.config.mjs`](scripts/profile.config.mjs), and a daily GitHub Action refreshes the stats cards with `npm run stats`. Fonts: Gentium Book Plus, Patrick Hand, Klee One and Yuji Syuku (SIL Open Font License).
+The motion on top of them (comet, rain, aviation lights, sunlight) and every card here are generated SVGs. `npm run build` redraws them from [`scripts/profile.config.mjs`](scripts/profile.config.mjs); GitHub Actions refresh the stats cards, the 3D calendar and the snake every day. Fonts: Great Vibes, Montserrat Alternates and Shippori Mincho B1 (SIL Open Font License). Icons: [skillicons.dev](https://skillicons.dev).
 
 </sub>
 </details>

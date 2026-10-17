@@ -5,21 +5,23 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { loadFonts } from './lib/type.mjs';
 import { fetchProfile } from './stats/fetch.mjs';
-import { yearCard } from './stats/year.mjs';
+import { overviewCard } from './stats/overview.mjs';
 import { languagesCard, shares } from './stats/languages.mjs';
+import { streakCard } from './stats/streak.mjs';
 import { activityCard } from './stats/activity.mjs';
 
 const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'assets', 'generated');
-const MAX_BYTES = 120 * 1024;
+const MAX_BYTES = 150 * 1024;
 
 async function main() {
   const login = process.env.PROFILE_USER || 'Nghaiz';
   const data = await fetchProfile(login, process.env.GITHUB_TOKEN);
-  await loadFonts(['gentium', 'patrick', 'klee']);
+  await loadFonts(['vibes', 'mont', 'montb']);
 
   const cards = {
-    'year.svg': yearCard(data),
+    'overview.svg': overviewCard(data),
     'languages.svg': languagesCard(data),
+    'streak.svg': streakCard(data),
     'activity.svg': activityCard(data),
   };
 
@@ -32,12 +34,12 @@ async function main() {
   }
   console.log(
     JSON.stringify({
-      totalContributions: data.totalContributions,
+      year: data.totalContributions,
       commits: data.commits,
       prs: data.prs,
       issues: data.issues,
       stars: data.stars,
-      contributedTo: data.contributedTo,
+      streak: data.streak,
       languages: shares(data.languages).map((l) => `${l.name} ${(l.share * 100).toFixed(1)}%`),
     }),
   );

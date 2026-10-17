@@ -2,61 +2,53 @@
 export const profile = {
   login: 'Nghaiz',
   name: 'Nguyễn Duy Nghĩa',
-  greeting: 'Xin chào!',
+  greeting: 'Xin chào',
   greetingJp: 'こんにちは',
-  titleJp: '僕の名前は、ギア。', // a nod to 君の名は。 — "my name is Nghĩa"
+  titleJp: '僕の名前は、ギア。', // a nod to 君の名は。: "my name is Nghĩa"
   tagline: 'IT Student @ PTIT  ·  Hà Nội, Việt Nam',
-  sealKanji: '義', // "Nghĩa" in Sino-Vietnamese
-  motto: '継続は力なり', // "Persistence is power"
-
-  toolbox: [
-    { label: 'Languages', items: ['C#', 'Python', 'TypeScript', 'Java', 'C++', 'Go', 'JavaScript', 'Dart'] },
-    { label: 'Game & Systems', items: ['Unity 6', '.NET', 'TCP / UDP sockets', 'Assembly 8086', 'ShaderLab'] },
-    { label: 'AI & Data', items: ['NumPy', 'Jupyter', 'RAG / GraphRAG', 'Neo4j', 'Qdrant', 'XGBoost'] },
-    { label: 'Web & App', items: ['Node.js', 'Express', 'React', 'MongoDB', 'Flutter', 'REST APIs'] },
-    { label: 'Tools', items: ['Git', 'GitHub Actions', 'Docker', 'PowerShell', 'Linux', 'LaTeX'] },
-  ],
 
   projects: [
     {
       file: 'project-ironfront',
+      kind: 'MULTIPLAYER FPS  ·  NETCODE',
       title: 'Ironfront: Reborn',
-      jp: '鉄の前線',
-      icon: 'target',
-      tint: 'sunset',
-      desc: 'A multiplayer FPS whose netcode is written from scratch on raw TCP and UDP sockets. One Unity 6 client, four .NET libraries, one frozen wire protocol.',
-      tags: ['C#', 'Unity 6', '.NET', 'Netcode'],
+      accent: 'comet',
+      desc: 'Netcode written from scratch on raw TCP and UDP sockets. One Unity 6 client, four .NET libraries and a wire protocol frozen in week one.',
+      tags: ['C#', 'Unity 6', '.NET', 'TCP / UDP'],
       repo: 'Nghaiz/LTM',
     },
     {
       file: 'project-drone',
-      title: 'IOT-CV Drone',
-      jp: '空の目',
-      icon: 'drone',
-      tint: 'sky',
-      desc: 'An S500 quadcopter on ArduPilot, flown from a hand-written web ground station, with obstacle avoidance and on-board person detection.',
-      tags: ['TypeScript', 'ArduPilot', 'Computer Vision'],
+      kind: 'DRONE  ·  COMPUTER VISION',
+      title: 'IOT-CV',
+      accent: 'sunset',
+      desc: 'An S500 quadcopter on ArduPilot, flown from a web ground station we wrote ourselves, with obstacle avoidance and person detection.',
+      tags: ['TypeScript', 'ArduPilot', 'Vision AI'],
       repo: 'ngtukien/IOT-CV',
     },
     {
       file: 'project-realestate',
+      kind: 'RAG  ·  GRAPHRAG',
       title: 'Vietnam Real Estates',
-      jp: '不動産',
-      icon: 'house',
-      tint: 'sun',
-      desc: 'A Q&A assistant over Vietnamese property listings that compares LLM-only, RAG, GraphRAG on Neo4j and a hybrid router on the same questions.',
+      accent: 'gold',
+      desc: 'Q&A over Vietnamese property listings that pits LLM-only, RAG, GraphRAG on Neo4j and a hybrid router against the same questions.',
       tags: ['Python', 'Qdrant', 'Neo4j', 'XGBoost'],
       repo: 'ngtukien/Vietnam-Real-Estates',
     },
     {
       file: 'project-intelligent',
+      kind: 'MACHINE LEARNING  ·  PTIT',
       title: 'Intelligent Systems',
-      jp: '知能',
-      icon: 'sprout',
-      tint: 'dusk',
-      desc: 'PTIT coursework: classic machine learning, systems you can deploy (REST API, web and mobile) and a neural network written by hand in NumPy.',
-      tags: ['Python', 'NumPy', 'REST API', 'Mobile'],
+      accent: 'violet',
+      desc: 'Classic ML shipped as real apps (REST API, web and mobile), plus a neural network written by hand in NumPy.',
+      tags: ['Python', 'NumPy', 'REST API'],
       repo: 'Nghaiz/Intelligent-System-Development',
     },
+  ],
+
+  // skillicons.dev ids, one row each
+  stack: [
+    'cs,unity,dotnet,cpp,java,go,py,ts,js,dart',
+    'nodejs,express,react,mongodb,flutter,docker,githubactions,git,linux,powershell',
   ],
 };

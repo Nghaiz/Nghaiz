@@ -1,4 +1,4 @@
-// Shared SVG building blocks: document wrapper, seeded randomness, small shapes, paper card.
+// Shared SVG building blocks: document wrapper, seeded randomness, the night-sky card.
 import { C } from './theme.mjs';
 
 export const fmt = (n) => +n.toFixed(2);
@@ -16,7 +16,7 @@ export function rng(seed) {
   };
 }
 
-/** Respect prefers-reduced-motion everywhere: freeze loops, show final state. */
+/** Respect prefers-reduced-motion everywhere: freeze loops, show the final state. */
 const REDUCED = '@media (prefers-reduced-motion:reduce){*{animation:none!important}}';
 
 export function doc({ width, height, title, desc = '', style = '', defs = '', body }) {
@@ -29,29 +29,24 @@ ${body}
 `;
 }
 
-/** Simple almond leaf with a midrib, pointing up from its stem at the origin. */
-export function leaf(s, fill = C.sky, rib = 'rgba(0,0,0,.18)') {
-  const k = (n) => fmt(n * s);
-  return `<path d="M0 0C${k(-0.55)} ${k(-0.3)} ${k(-0.5)} ${k(-0.85)} 0 ${k(-1.2)}C${k(0.5)} ${k(-0.85)} ${k(0.55)} ${k(-0.3)} 0 0Z" fill="${fill}"/><path d="M0 0L0 ${k(-1.05)}" stroke="${rib}" stroke-width="${fmt(Math.max(0.6, s * 0.06))}"/>`;
-}
-
-/** Hand-drawn wobbly line from (x1,y) to (x2,y). */
-export function wobble(x1, x2, y, seed = 1, amp = 2.2) {
-  const r = rng(seed);
-  const n = Math.max(4, Math.round((x2 - x1) / 60));
-  let d = `M${x1} ${y}`;
-  for (let i = 1; i <= n; i++) {
-    const x = lerp(x1, x2, i / n);
-    const cx = lerp(x1, x2, (i - 0.5) / n);
-    d += `Q${fmt(cx)} ${fmt(y + (r() - 0.5) * amp * 2)} ${fmt(x)} ${fmt(y + (r() - 0.5) * amp)}`;
+/**
+ * Night-sky card: deep-blue gradient, faint twinkling stars, a soft comet-coloured glow in one
+ * corner, hairline border. Returns { css, defs, svg } — draw content after `svg`.
+ */
+export function nightCard({ w, h, seed = 1, r = 18 }) {
+  const rand = rng(seed);
+  let stars = '';
+  for (let i = 0; i < Math.round((w * h) / 9000); i++) {
+    stars += `<circle class="nc-st" cx="${fmt(rand() * w)}" cy="${fmt(rand() * h)}" r="${fmt(0.4 + rand() * 0.9)}" fill="#FFFFFF" style="animation-delay:${fmt(-rand() * 6)}s;animation-duration:${fmt(3 + rand() * 4)}s"/>`;
   }
-  return d;
-}
-
-/** Paper card: cream fill, warm hairline border, soft offset shadow. */
-export function card({ x = 0, y = 0, w, h, r = 18 }) {
-  return `<rect x="${x + 3}" y="${y + 5}" width="${w - 6}" height="${h - 8}" rx="${r}" fill="#000" opacity=".06"/>` +
-    `<rect x="${x + 1}" y="${y + 1}" width="${w - 6}" height="${h - 8}" rx="${r}" fill="${C.paper}" stroke="${C.rule}" stroke-width="1.5"/>`;
+  return {
+    css: '@keyframes nc-st{0%,100%{opacity:.08}50%{opacity:.55}}.nc-st{animation:nc-st ease-in-out infinite}',
+    defs: `<linearGradient id="ncBg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${C.bg1}"/><stop offset="1" stop-color="${C.bg0}"/></linearGradient>
+      <radialGradient id="ncGlow" cx="1" cy="0" r="1"><stop offset="0" stop-color="${C.comet}" stop-opacity=".16"/><stop offset=".6" stop-color="${C.comet}" stop-opacity="0"/></radialGradient>
+      <clipPath id="ncClip"><rect width="${w}" height="${h}" rx="${r}"/></clipPath>`,
+    svg: `<g clip-path="url(#ncClip)"><rect width="${w}" height="${h}" fill="url(#ncBg)"/><rect width="${w}" height="${h}" fill="url(#ncGlow)"/>${stars}</g>
+      <rect x=".75" y=".75" width="${w - 1.5}" height="${h - 1.5}" rx="${r}" fill="none" stroke="${C.line}" stroke-width="1.5"/>`,
+  };
 }
 
 /** XML-escape for text that still goes into attributes/titles. */

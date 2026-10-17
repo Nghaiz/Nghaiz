@@ -1,5 +1,5 @@
 // Motion layers composited over film stills: a slow Ken Burns image layer, stars, shooting
-// stars, light motes, rain, light rays and shadowed title text. Each returns { css, svg, defs? }.
+// stars, light motes, rain, komorebi bokeh, a light sweep and shadowed title text. Each returns { css, svg, defs? }.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -76,19 +76,31 @@ export function rain({ w, h, count = 90, seed = 13, prefix = 'rn', slant = 0.18,
   return { css, svg };
 }
 
-/** Soft light rays fanning out from (cx, cy), slowly rotating and breathing. */
-export function rays({ cx, cy, count = 14, len = 700, seed = 2, prefix = 'ry', color = '#FFFBEA' }) {
+/**
+ * Komorebi: soft out-of-focus light discs (sunlight through leaves) that bloom and fade out of
+ * phase and drift a little. No hard beams.
+ */
+export function bokeh({ count, x0, x1, y0, y1, seed = 21, prefix = 'bk', colors = ['#FFF4D6', '#FFE2A8', '#FFFFFF'], min = 8, max = 34 }) {
   const r = rng(seed);
-  let beams = '';
+  let svg = '';
   for (let i = 0; i < count; i++) {
-    const a = (i / count) * 360 + r() * 12;
-    const spread = 1.2 + r() * 2.6;
-    beams += `<path d="M0 0L${fmt(len)} ${fmt(-spread * 10)}L${fmt(len)} ${fmt(spread * 10)}Z" transform="rotate(${fmt(a)})" fill="url(#${prefix}G)" opacity="${fmt(0.25 + r() * 0.45)}"/>`;
+    const c = colors[Math.floor(r() * colors.length)];
+    svg += `<circle class="${prefix}" cx="${fmt(lerp(x0, x1, r()))}" cy="${fmt(lerp(y0, y1, r()))}" r="${fmt(lerp(min, max, r()))}" fill="url(#${prefix}G${colors.indexOf(c)})" style="animation-duration:${fmt(5 + r() * 6)}s;animation-delay:${fmt(-r() * 10)}s"/>`;
   }
+  const defs = colors.map((c, i) => `<radialGradient id="${prefix}G${i}"><stop offset="0" stop-color="${c}" stop-opacity=".85"/><stop offset=".55" stop-color="${c}" stop-opacity=".35"/><stop offset="1" stop-color="${c}" stop-opacity="0"/></radialGradient>`).join('');
   return {
-    css: `@keyframes ${prefix}{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}.${prefix}{animation:${prefix} 140s linear infinite}@keyframes ${prefix}b{0%,100%{opacity:.3}50%{opacity:.55}}.${prefix}b{animation:${prefix}b 6s ease-in-out infinite}`,
-    defs: `<linearGradient id="${prefix}G" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${color}" stop-opacity=".9"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient>`,
-    svg: `<g transform="translate(${cx} ${cy})"><g class="${prefix}b"><g class="${prefix}">${beams}</g></g></g>`,
+    css: `@keyframes ${prefix}{0%,100%{opacity:0;transform:translate(0,0) scale(.7)}40%{opacity:.75}60%{opacity:.55;transform:translate(8px,-6px) scale(1)}}.${prefix}{transform-box:fill-box;transform-origin:center;animation:${prefix} ease-in-out infinite}`,
+    defs,
+    svg,
+  };
+}
+
+/** A wide, soft band of light that glides across the frame — like a slow lens sweep. */
+export function lightSweep({ w, h, prefix = 'sw', color = '#FFFFFF', opacity = 0.22, dur = 9, angle = -18 }) {
+  return {
+    css: `@keyframes ${prefix}{0%{transform:translateX(${-w * 0.6}px) skewX(${angle}deg)}60%,100%{transform:translateX(${w * 1.3}px) skewX(${angle}deg)}}.${prefix}{animation:${prefix} ${dur}s ease-in-out infinite}`,
+    defs: `<linearGradient id="${prefix}G" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${color}" stop-opacity="0"/><stop offset=".5" stop-color="${color}" stop-opacity="${opacity}"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient>`,
+    svg: `<rect class="${prefix}" x="0" y="${-h * 0.2}" width="${w * 0.35}" height="${h * 1.4}" fill="url(#${prefix}G)"/>`,
   };
 }
 

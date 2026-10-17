@@ -10,11 +10,10 @@ const FONT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 const GOOGLE_FONTS_RAW = 'https://raw.githubusercontent.com/google/fonts/main/ofl';
 
 const SOURCES = {
-  charm: 'charm/Charm-Bold.ttf',
-  gentium: 'gentiumbookplus/GentiumBookPlus-Bold.ttf',
-  patrick: 'patrickhand/PatrickHand-Regular.ttf',
-  klee: 'kleeone/KleeOne-SemiBold.ttf',
-  yuji: 'yujisyuku/YujiSyuku-Regular.ttf',
+  vibes: 'greatvibes/GreatVibes-Regular.ttf',
+  mont: 'montserratalternates/MontserratAlternates-Regular.ttf',
+  montb: 'montserratalternates/MontserratAlternates-SemiBold.ttf',
+  mincho: 'shipporiminchob1/ShipporiMinchoB1-Bold.ttf',
 };
 
 const loaded = new Map();

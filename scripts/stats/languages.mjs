@@ -1,12 +1,14 @@
-// "Languages" card: one rounded stacked bar that fills in, plus a two-column legend.
+// "Languages" card: a donut whose arcs draw in one after another, plus a legend.
 import { C, SERIES } from '../lib/theme.mjs';
 import { text } from '../lib/type.mjs';
-import { doc, card, fmt } from '../lib/svg.mjs';
+import { doc, nightCard, fmt } from '../lib/svg.mjs';
+import { cardTitle } from './overview.mjs';
 
 const W = 600;
 const H = 300;
-// HTML in these repos is mostly exported reports, TeX is coursework write-ups — not code.
-const EXCLUDED = ['HTML', 'TeX'];
+// Not code written by hand: HTML here is exported reports, TeX is write-ups, and notebook
+// size is dominated by stored outputs.
+const EXCLUDED = ['HTML', 'TeX', 'Jupyter Notebook'];
 const TOP = 6;
 
 export function shares(languages) {
@@ -20,36 +22,39 @@ export function shares(languages) {
 }
 
 export function languagesCard(d) {
+  const card = nightCard({ w: W, h: H, seed: 5 });
   const items = shares(d.languages);
-  const title = text('Languages', { font: 'gentium', size: 28, x: 36, y: 54 });
-  const jp = text('言語', { font: 'klee', size: 18, x: 36 + title.width + 12, y: 52 });
-  const BX = 36;
-  const BW = W - 72;
-  let x = BX;
-  let bar = '';
-  items.forEach((it, i) => {
-    const w = it.share * BW;
-    bar += `<rect class="seg" x="${fmt(x)}" y="80" width="${fmt(Math.max(w - 2, 1))}" height="18" fill="${SERIES[i % SERIES.length]}" style="animation-delay:${fmt(0.2 + i * 0.12)}s"/>`;
-    x += w;
-  });
-  const legend = items
+  const cx = 140;
+  const cy = 190;
+  const R = 62;
+  const circ = 2 * Math.PI * R;
+  let acc = 0;
+  const arcs = items
     .map((it, i) => {
-      const col = i % 2;
-      const row = Math.floor(i / 2);
-      const lx = 40 + col * 270;
-      const ly = 142 + row * 38;
-      const name = text(it.name, { font: 'patrick', size: 22, x: lx + 22, y: ly });
-      const pct = text(`${(it.share * 100).toFixed(1)}%`, { font: 'gentium', size: 18, x: lx + 240, y: ly, anchor: 'end' });
-      return `<g class="in" style="animation-delay:${fmt(0.5 + i * 0.08)}s"><circle cx="${lx + 7}" cy="${ly - 7}" r="7" fill="${SERIES[i % SERIES.length]}"/><path d="${name.d}" fill="${C.ink}"/><path d="${pct.d}" fill="${C.inkSoft}"/></g>`;
+      const len = Math.max(it.share * circ - 3, 0.5);
+      const arc = `<circle class="arc" cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${SERIES[i % SERIES.length]}" stroke-width="16" stroke-dasharray="${fmt(len)} ${fmt(circ)}" stroke-dashoffset="${fmt(-acc)}" transform="rotate(-90 ${cx} ${cy})" style="--len:${fmt(len)};animation-delay:${fmt(0.2 + i * 0.18)}s"/>`;
+      acc += it.share * circ;
+      return arc;
     })
     .join('');
-  const style = `@keyframes in{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}} .in{animation:in .8s ease-out both}
-    @keyframes seg{0%{transform:scaleX(0)}100%{transform:scaleX(1)}} .seg{transform-box:fill-box;transform-origin:left;animation:seg .7s ease-out both}`;
-  const defs = `<clipPath id="barClip"><rect x="${BX}" y="80" width="${BW}" height="18" rx="9"/></clipPath>`;
-  const body = `${card({ w: W, h: H })}
-    <path d="${title.d}" fill="${C.ink}"/><path d="${jp.d}" fill="${C.inkSoft}"/>
-    <rect x="${BX}" y="80" width="${BW}" height="18" rx="9" fill="${C.paperDeep}"/>
-    <g clip-path="url(#barClip)">${bar}</g>
+  const topPct = text(`${Math.round(items[0].share * 100)}%`, { font: 'montb', size: 24, x: cx, y: cy + 4, anchor: 'middle' });
+  const topName = text(items[0].name, { font: 'mont', size: 11, x: cx, y: cy + 22, anchor: 'middle' });
+  const legend = items
+    .map((it, i) => {
+      const y = 126 + i * 24;
+      const n = text(it.name, { font: 'mont', size: 14, x: 290, y });
+      const p = text(`${(it.share * 100).toFixed(1)}%`, { font: 'montb', size: 13, x: W - 36, y, anchor: 'end' });
+      return `<g class="in" style="animation-delay:${fmt(0.3 + i * 0.08)}s"><circle cx="274" cy="${y - 5}" r="5" fill="${SERIES[i % SERIES.length]}"/><path d="${n.d}" fill="${C.text}"/><path d="${p.d}" fill="${C.soft}"/></g>`;
+    })
+    .join('');
+  const style = `${card.css}
+    @keyframes in{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}} .in{animation:in .8s ease-out both}
+    @keyframes arc{from{stroke-dasharray:0 1000}} .arc{animation:arc .9s ease-out both}`;
+  const body = `${card.svg}
+    <g class="in">${cardTitle('PUBLIC REPOS  ·  BY CODE SIZE', 'Languages', C.sunset)}</g>
+    <circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="#FFFFFF" stroke-opacity=".06" stroke-width="16"/>
+    ${arcs}
+    <g class="in" style="animation-delay:.9s"><path d="${topPct.d}" fill="${C.text}"/><path d="${topName.d}" fill="${C.soft}"/></g>
     ${legend}`;
-  return doc({ width: W, height: H, title: 'Languages', desc: items.map((i) => `${i.name} ${(i.share * 100).toFixed(1)}%`).join(', '), style, defs, body });
+  return doc({ width: W, height: H, title: 'Languages', desc: items.map((i) => `${i.name} ${(i.share * 100).toFixed(1)}%`).join(', '), style, defs: card.defs, body });
 }
