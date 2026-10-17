@@ -6,6 +6,7 @@ export const profile = {
   greetingJp: 'こんにちは',
   titleJp: '僕の名前は、ギア。', // a nod to 君の名は。: "my name is Nghĩa"
   tagline: 'IT Student @ PTIT  ·  Hà Nội, Việt Nam',
+  role: 'Software engineer, heading for DevOps & Cloud',
 
   projects: [
     {

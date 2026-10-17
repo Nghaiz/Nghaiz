@@ -17,11 +17,11 @@
 
 **Xin chào!** I'm Nghĩa, an IT student at PTIT in Hà Nội.
 
-Most of my time goes into **Ironfront: Reborn**, a multiplayer FPS where the netcode is the whole point. Raw TCP and UDP sockets, no Mirror, no Photon, and a wire protocol I froze in week one.
+I started out writing software, and I still do. These days I care just as much about what happens after the code is written: how it gets built, tested, shipped and kept running. That's the road I'm on, **from software engineer toward DevOps and Cloud**.
 
-The rest goes to AI work that has to run somewhere real: RAG and GraphRAG over Vietnamese property listings, and machine learning apps with a REST API, a web client and a mobile app behind them. With friends, I also fly a quadcopter from a ground station we wrote ourselves.
+So far on that road: CI pipelines on GitHub Actions with build gates that refuse a bad merge, a Jenkins job that pushes builds through an API, Docker for the services I deploy, and a DevOps learning platform I'm building on the side. Next up: Kubernetes, Terraform and running things on a real cloud.
 
-I once wrote Snake in 8086 assembly. I don't recommend it.
+University gave me the rest: a multiplayer FPS netcode on raw TCP/UDP, RAG over Vietnamese property data, a drone ground station. I once wrote Snake in 8086 assembly. I don't recommend it.
 
 <br clear="right">
 
@@ -30,15 +30,32 @@ I once wrote Snake in 8086 assembly. I don't recommend it.
   <img src="assets/heading-stack.svg" width="100%" alt="Tech stack">
 </picture>
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/label-devops-dark.svg">
+  <img src="assets/label-devops.svg" width="100%" alt="Heading toward: DevOps and Cloud">
+</picture>
+
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=cs,unity,dotnet,cpp,java,go,py,ts,js,dart&theme=dark" alt="C#, Unity, .NET, C++, Java, Go, Python, TypeScript, JavaScript, Dart"><br>
-  <img src="https://skillicons.dev/icons?i=nodejs,express,react,mongodb,flutter,docker,githubactions,git,linux,powershell&theme=dark" alt="Node.js, Express, React, MongoDB, Flutter, Docker, GitHub Actions, Git, Linux, PowerShell">
+  <img src="https://skillicons.dev/icons?i=docker,kubernetes,githubactions,jenkins,terraform,ansible,nginx&theme=dark" alt="Docker, Kubernetes, GitHub Actions, Jenkins, Terraform, Ansible, Nginx"><br>
+  <img src="https://skillicons.dev/icons?i=aws,gcp,azure,cloudflare,prometheus,grafana,linux,ubuntu,bash&theme=dark" alt="AWS, Google Cloud, Azure, Cloudflare, Prometheus, Grafana, Linux, Ubuntu, Bash">
+</p>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/label-building-dark.svg">
+  <img src="assets/label-building.svg" width="100%" alt="Building with">
+</picture>
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=cs,dotnet,unity,go,py,ts,js,java,cpp&theme=dark" alt="C#, .NET, Unity, Go, Python, TypeScript, JavaScript, Java, C++"><br>
+  <img src="https://skillicons.dev/icons?i=nodejs,express,react,mongodb,flutter,git,powershell&theme=dark" alt="Node.js, Express, React, MongoDB, Flutter, Git, PowerShell">
 </p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/heading-projects-dark.svg">
-  <img src="assets/heading-projects.svg" width="100%" alt="Projects">
+  <img src="assets/heading-projects.svg" width="100%" alt="University projects">
 </picture>
+
+<p align="center"><sub>Coursework and student team projects at PTIT.</sub></p>
 
 <p align="center">
   <a href="https://github.com/Nghaiz/LTM"><img src="assets/project-ironfront.svg" width="49%" alt="Ironfront: Reborn"></a>

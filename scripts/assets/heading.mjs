@@ -23,3 +23,17 @@ export function heading({ title, jp }, mode = 'light') {
     <g transform="translate(28 92)"><g class="tw">${glint(6, t.accent)}</g></g>`;
   return doc({ width: W, height: H, title: `${title} · ${jp}`, desc: `Section: ${title}`, style, defs, body });
 }
+
+/** Compact centred sub-label (e.g. inside the tech stack section). */
+export function sublabel({ title }, mode = 'light') {
+  const t = HEADING[mode];
+  const W2 = 1200;
+  const H2 = 64;
+  const head = text(title, { font: 'fuzzy', size: 28, x: W2 / 2, y: 42, anchor: 'middle' });
+  const half = head.width / 2;
+  const style = '@keyframes tw{0%,100%{transform:scale(.6) rotate(0);opacity:.6}50%{transform:scale(1.1) rotate(45deg);opacity:1}} .tw{transform-box:fill-box;transform-origin:center;animation:tw 3s ease-in-out infinite}';
+  const body = `<path d="${head.d}" fill="${t.ink}"/>
+    <path d="M${W2 / 2 - half - 150} 32H${W2 / 2 - half - 24}M${W2 / 2 + half + 24} 32H${W2 / 2 + half + 150}" stroke="${t.accent}" stroke-opacity=".6" stroke-width="1.5" stroke-linecap="round"/>
+    <g transform="translate(${W2 / 2 - half - 24} 32)"><g class="tw">${glint(5, t.accent)}</g></g><g transform="translate(${W2 / 2 + half + 24} 32)"><g class="tw" style="animation-delay:-1.5s">${glint(5, t.accent)}</g></g>`;
+  return doc({ width: W2, height: H2, title, desc: title, style, body });
+}

@@ -8,7 +8,7 @@ import { loadFonts } from './lib/type.mjs';
 import { profile } from './profile.config.mjs';
 import { hero } from './assets/hero.mjs';
 import { tokyo, dawnBanner, sunlight } from './assets/scenes.mjs';
-import { heading } from './assets/heading.mjs';
+import { heading, sublabel } from './assets/heading.mjs';
 import { project } from './assets/project.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -17,7 +17,7 @@ const OUT = path.join(ROOT, 'assets');
 const HEADINGS = {
   about: { title: 'About me', jp: '自己紹介' },
   stack: { title: 'Tech stack', jp: '技術' },
-  projects: { title: 'Projects', jp: '作品' },
+  projects: { title: 'University projects', jp: '学業' },
   graph: { title: 'Contribution graph', jp: '足あと' },
 };
 
@@ -30,6 +30,11 @@ const builders = {
 for (const [key, h] of Object.entries(HEADINGS)) {
   builders[`heading-${key}.svg`] = () => heading(h, 'light');
   builders[`heading-${key}-dark.svg`] = () => heading(h, 'dark');
+}
+const SUBLABELS = { building: 'Building with', devops: 'Heading toward  ·  DevOps & Cloud' };
+for (const [key, title] of Object.entries(SUBLABELS)) {
+  builders[`label-${key}.svg`] = () => sublabel({ title }, 'light');
+  builders[`label-${key}-dark.svg`] = () => sublabel({ title }, 'dark');
 }
 profile.projects.forEach((p, i) => {
   builders[`${p.file}.svg`] = () => project(p, profile.login, 11 + i);
