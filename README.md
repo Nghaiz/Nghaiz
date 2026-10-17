@@ -4,7 +4,7 @@
 
 <p align="center">
   <a href="https://github.com/Nghaiz?tab=followers"><img src="https://img.shields.io/github/followers/Nghaiz?label=followers&style=flat-square&labelColor=0A0F26&color=3F7FC8" alt="followers"></a>
-  <img src="https://komarev.com/ghpvc/?username=Nghaiz&label=profile%20views&color=3F7FC8&style=flat-square" alt="profile views">
+  <img src="https://visitor-badge.laobi.icu/badge?page_id=Nghaiz.Nghaiz&left_text=profile%20views&left_color=%230A0F26&right_color=%233F7FC8" alt="profile views">
   <a href="https://github.com/Nghaiz?tab=repositories"><img src="https://img.shields.io/github/stars/Nghaiz?label=stars&style=flat-square&labelColor=0A0F26&color=F4A6B7" alt="stars"></a>
 </p>
 
