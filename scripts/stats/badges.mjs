@@ -6,6 +6,7 @@ import { num } from './overview.mjs';
 
 const H = 46;
 const R = H / 2;
+const PAD = { x: 5, top: 8, bottom: 4 };
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 // Owns the fill attribute too: writing fill twice on one element is invalid XML and the browser drops the whole image.
@@ -59,15 +60,17 @@ export function badge({ label, value, icon, accent, index = 0 }) {
     <linearGradient id="sh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".5" stop-color="#FFFFFF" stop-opacity=".2"/><stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/></linearGradient>
     <filter id="vg" x="-30%" y="-60%" width="160%" height="220%"><feGaussianBlur stdDeviation="3.5"/></filter>
     <clipPath id="pill"><rect width="${W}" height="${H}" rx="${R}"/></clipPath>`;
-  const body = `<g clip-path="url(#pill)">
+  // Breathing room is baked into the SVG: GitHub strips CSS margins, and whitespace between
+  // <img> tags gives only a few pixels, so badges would otherwise touch each other and the hero.
+  const body = `<g transform="translate(${PAD.x} ${PAD.top})"><g clip-path="url(#pill)">
       <rect width="${W}" height="${H}" fill="url(#bg)"/><rect class="pulse" width="${W}" height="${H}" fill="url(#glow)"/>${stars}
       <rect class="sweep" x="0" y="-10" width="48" height="${H + 20}" fill="url(#sh)"/></g>
     <rect x=".75" y=".75" width="${W - 1.5}" height="${H - 1.5}" rx="${R - 0.75}" fill="none" stroke="url(#rim)" stroke-width="1.5"/>
     <circle cx="23" cy="23" r="15.5" fill="${base}" fill-opacity=".16" stroke="${base}" stroke-opacity=".55"/>
     <g transform="translate(23 23)">${ICONS[icon](base)}</g>
     <path d="${l.d}" fill="#DDE5FA"/>
-    <g class="rise"><path d="${v.d}" fill="${base}" opacity=".6" filter="url(#vg)"/><path d="${v.d}" fill="url(#val)"/></g>`;
-  return doc({ width: W, height: H, title: `${label}: ${value}`, desc: `${label}: ${value}`, style, defs, body });
+    <g class="rise"><path d="${v.d}" fill="${base}" opacity=".6" filter="url(#vg)"/><path d="${v.d}" fill="url(#val)"/></g></g>`;
+  return doc({ width: W + 2 * PAD.x, height: H + PAD.top + PAD.bottom, title: `${label}: ${value}`, desc: `${label}: ${value}`, style, defs, body });
 }
 
 /** The badge row under the hero, in display order. Returns { file: svg }. */

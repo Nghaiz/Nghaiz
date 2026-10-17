@@ -3,14 +3,14 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/Nghaiz?tab=followers"><img src="assets/generated/badge-followers.svg" height="46" alt="Followers"></a>
-  <a href="https://github.com/Nghaiz?tab=repositories&amp;sort=stargazers"><img src="assets/generated/badge-stars.svg" height="46" alt="Stars"></a>
-  <a href="https://github.com/Nghaiz?tab=repositories"><img src="assets/generated/badge-repos.svg" height="46" alt="Public repositories"></a>
-  <img src="assets/generated/badge-contributions.svg" height="46" alt="Contributions in the last 12 months">
+  <a href="https://github.com/Nghaiz?tab=followers"><img src="assets/generated/badge-followers.svg" height="58" alt="Followers"></a>
+  <a href="https://github.com/Nghaiz?tab=repositories&amp;sort=stargazers"><img src="assets/generated/badge-stars.svg" height="58" alt="Stars"></a>
+  <a href="https://github.com/Nghaiz?tab=repositories"><img src="assets/generated/badge-repos.svg" height="58" alt="Public repositories"></a>
+  <img src="assets/generated/badge-contributions.svg" height="58" alt="Contributions in the last 12 months">
   <br>
-  <a href="https://github.com/search?q=author%3ANghaiz+is%3Apr+is%3Amerged+is%3Apublic&amp;type=pullrequests"><img src="assets/generated/badge-prs.svg" height="46" alt="Merged pull requests"></a>
-  <img src="assets/generated/badge-streak.svg" height="46" alt="Current contribution streak">
-  <img src="assets/generated/badge-since.svg" height="46" alt="On GitHub since">
+  <a href="https://github.com/search?q=author%3ANghaiz+is%3Apr+is%3Amerged+is%3Apublic&amp;type=pullrequests"><img src="assets/generated/badge-prs.svg" height="58" alt="Merged pull requests"></a>
+  <img src="assets/generated/badge-streak.svg" height="58" alt="Current contribution streak">
+  <img src="assets/generated/badge-since.svg" height="58" alt="On GitHub since">
 </p>
 
 <picture>
