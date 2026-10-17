@@ -9,6 +9,7 @@ import { overviewCard } from './stats/overview.mjs';
 import { languagesCard, shares } from './stats/languages.mjs';
 import { streakCard } from './stats/streak.mjs';
 import { activityCard } from './stats/activity.mjs';
+import { badges } from './stats/badges.mjs';
 
 const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'assets', 'generated');
 const MAX_BYTES = 250 * 1024;
@@ -23,6 +24,7 @@ async function main() {
     'languages.svg': languagesCard(data),
     'streak.svg': streakCard(data),
     'activity.svg': activityCard(data),
+    ...badges(data),
   };
 
   fs.mkdirSync(OUT_DIR, { recursive: true });
@@ -35,6 +37,10 @@ async function main() {
   console.log(
     JSON.stringify({
       year: data.totalContributions,
+      followers: data.followers,
+      publicRepos: data.publicRepos,
+      prsMerged: data.prsMerged,
+      createdAt: data.createdAt,
       commits: data.commits,
       prs: data.prs,
       issues: data.issues,

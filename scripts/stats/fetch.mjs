@@ -8,6 +8,7 @@ query($login:String!){
     name
     createdAt
     followers{ totalCount }
+    publicRepos: repositories(privacy:PUBLIC, ownerAffiliations:OWNER){ totalCount }
     contributionsCollection{
       totalCommitContributions
       totalPullRequestContributions
@@ -90,7 +91,18 @@ query($login:String!, $after:String){
   }
 }`;
 
-async function gql(token, query, variables, attempt = 1) {
+// is:public keeps the count identical between a local run and the public-only CI token.
+const MERGED_PRS_QUERY = `
+query($q:String!){
+  search(query:$q, type:ISSUE, first:1){ issueCount }
+}`;
+
+const pickUser = (data) => {
+  if (!data?.user) throw new Error('GitHub GraphQL returned no user — check PROFILE_USER');
+  return data.user;
+};
+
+async function gql(token, query, variables, pick = pickUser, attempt = 1) {
   const res = await fetch(ENDPOINT, {
     method: 'POST',
     headers: {
@@ -102,13 +114,12 @@ async function gql(token, query, variables, attempt = 1) {
   });
   if ([502, 503, 504].includes(res.status) && attempt < 4) {
     await new Promise((r) => setTimeout(r, 1500 * attempt));
-    return gql(token, query, variables, attempt + 1);
+    return gql(token, query, variables, pick, attempt + 1);
   }
   if (!res.ok) throw new Error(`GitHub GraphQL HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const json = await res.json();
   if (json.errors?.length) throw new Error(`GitHub GraphQL errors: ${json.errors.map((e) => e.message).join('; ')}`);
-  if (!json.data?.user) throw new Error('GitHub GraphQL returned no user — check PROFILE_USER');
-  return json.data.user;
+  return pick(json.data);
 }
 
 /** Everything the three cards need, in one normalised object. */
@@ -142,10 +153,15 @@ export async function fetchProfile(login, token) {
     .flatMap((w) => w.contributionDays)
     .sort((a, b) => a.date.localeCompare(b.date));
 
+  const merged = await gql(token, MERGED_PRS_QUERY, { q: `author:${login} is:pr is:merged is:public` }, (data) => data.search);
+
   return {
     login: user.login,
     name: user.name,
+    createdAt: user.createdAt,
     followers: user.followers.totalCount,
+    publicRepos: user.publicRepos.totalCount,
+    prsMerged: merged.issueCount,
     repoCount: repos.length,
     stars,
     contributedTo: user.repositoriesContributedTo.totalCount,

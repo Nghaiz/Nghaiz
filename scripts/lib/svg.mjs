@@ -35,6 +35,8 @@ export const GRAD = {
   sunset: ['#FFE6C2', '#FF8FB4'],
   gold: ['#FFF6D2', '#FFB84D'],
   violet: ['#FFFFFF', '#A88CFF'],
+  mint: ['#EFFFF8', '#5FE0B0'],
+  ember: ['#FFF0D6', '#FF9A4D'],
 };
 
 /**

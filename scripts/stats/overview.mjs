@@ -44,7 +44,7 @@ export function overviewCard(d) {
   const body = `${card.svg}
     <g class="in">${cardTitle('Year in review', 'last 12 months')}</g>
     <g class="in" style="animation-delay:.2s">${glowing(big.d, 'comet')}<path d="${unit.d}" fill="#FFFFFF"/></g>
-    <path d="M34 226H${W - 34}" stroke="url(#ncRim)" stroke-width="1.2" opacity=".6"/>
+    <rect x="34" y="225.4" width="${W - 68}" height="1.2" fill="url(#ncRim)" opacity=".7"/>
     ${cells}`;
   return doc({ width: W, height: H, title: `${num(d.totalContributions)} contributions this year`, desc: metrics.map(([v, l]) => `${l}: ${num(v)}`).join(', '), style, defs: card.defs, body });
 }

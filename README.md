@@ -3,9 +3,14 @@
 </div>
 
 <p align="center">
-  <a href="https://github.com/Nghaiz?tab=followers"><img src="https://img.shields.io/github/followers/Nghaiz?label=followers&style=flat-square&labelColor=0A0F26&color=3F7FC8" alt="followers"></a>
-  <img src="https://visitor-badge.laobi.icu/badge?page_id=Nghaiz.Nghaiz&left_text=profile%20views&left_color=%230A0F26&right_color=%233F7FC8" alt="profile views">
-  <a href="https://github.com/Nghaiz?tab=repositories"><img src="https://img.shields.io/github/stars/Nghaiz?label=stars&style=flat-square&labelColor=0A0F26&color=F4A6B7" alt="stars"></a>
+  <a href="https://github.com/Nghaiz?tab=followers"><img src="assets/generated/badge-followers.svg" height="46" alt="Followers"></a>
+  <a href="https://github.com/Nghaiz?tab=repositories&amp;sort=stargazers"><img src="assets/generated/badge-stars.svg" height="46" alt="Stars"></a>
+  <a href="https://github.com/Nghaiz?tab=repositories"><img src="assets/generated/badge-repos.svg" height="46" alt="Public repositories"></a>
+  <img src="assets/generated/badge-contributions.svg" height="46" alt="Contributions in the last 12 months">
+  <br>
+  <a href="https://github.com/search?q=author%3ANghaiz+is%3Apr+is%3Amerged+is%3Apublic&amp;type=pullrequests"><img src="assets/generated/badge-prs.svg" height="46" alt="Merged pull requests"></a>
+  <img src="assets/generated/badge-streak.svg" height="46" alt="Current contribution streak">
+  <img src="assets/generated/badge-since.svg" height="46" alt="On GitHub since">
 </p>
 
 <picture>
@@ -52,10 +57,8 @@ University gave me the rest: a multiplayer FPS netcode on raw TCP/UDP, RAG over 
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/heading-projects-dark.svg">
-  <img src="assets/heading-projects.svg" width="100%" alt="University projects">
+  <img src="assets/heading-projects.svg" width="100%" alt="University projects: coursework and student team projects at PTIT">
 </picture>
-
-<p align="center"><sub>Coursework and student team projects at PTIT.</sub></p>
 
 <p align="center">
   <a href="https://github.com/Nghaiz/LTM"><img src="assets/project-ironfront.svg" width="49%" alt="Ironfront: Reborn"></a>
@@ -88,17 +91,17 @@ University gave me the rest: a multiplayer FPS netcode on raw TCP/UDP, RAG over 
 <img src="assets/footer.svg" width="100%" alt="Cảm ơn bạn đã ghé thăm! Thanks for stopping by.">
 
 <details>
-<summary><sub>Image credits and how this page is made</sub></summary>
-
-<sub>
+<summary>Image credits and how this page is made</summary>
+<br>
 
 The scenes are stills and fanart from Makoto Shinkai's films. All rights stay with their owners; they are used here as a fan tribute, with credit.
 
-- Header: *Your Name* (君の名は。) fanart by [画师JW](https://www.pixiv.net/artworks/89578796)
-- About and stats banner: *Your Name* (君の名は。) © 2016 TOHO / CoMix Wave Films
-- Footer: *Weathering With You* (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films
+- **Header:** *Your Name* (君の名は。) fanart by [画师JW](https://www.pixiv.net/artworks/89578796)
+- **About and stats banner:** *Your Name* (君の名は。) © 2016 TOHO / CoMix Wave Films
+- **Footer:** *Weathering With You* (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films
 
-The motion on top of them (comet, rain, aviation lights, sunlight) and every card here are generated SVGs. `npm run build` redraws them from [`scripts/profile.config.mjs`](scripts/profile.config.mjs); GitHub Actions refresh the stats cards, the 3D calendar and the snake every day. Fonts: Fuzzy Bubbles, Montserrat Alternates and Shippori Mincho B1 (SIL Open Font License). Icons: [skillicons.dev](https://skillicons.dev).
+The motion on top of them (comet, rain, aviation lights, sunlight), the badges and every card here are generated SVGs. `npm run build` redraws them from [`scripts/profile.config.mjs`](scripts/profile.config.mjs), and GitHub Actions refresh the badges, the stats cards, the 3D calendar and the snake every day.
 
-</sub>
+Fonts: Fuzzy Bubbles, Shippori Mincho B1 and Montserrat Alternates (SIL Open Font License). Icons: [skillicons.dev](https://skillicons.dev).
+
 </details>

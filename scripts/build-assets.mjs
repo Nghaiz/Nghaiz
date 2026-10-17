@@ -17,7 +17,7 @@ const OUT = path.join(ROOT, 'assets');
 const HEADINGS = {
   about: { title: 'About me', jp: '自己紹介' },
   stack: { title: 'Tech stack', jp: '技術' },
-  projects: { title: 'University projects', jp: '学業' },
+  projects: { title: 'University projects', jp: '学業', note: 'coursework and student team projects at PTIT' },
   graph: { title: 'Contribution graph', jp: '足あと' },
 };
 
