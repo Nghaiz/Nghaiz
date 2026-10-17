@@ -10,7 +10,7 @@ const H = 110;
 
 export function heading({ title, jp }, mode = 'light') {
   const t = HEADING[mode];
-  const head = text(title, { font: 'vibes', size: 60, x: 24, y: 70 });
+  const head = text(title, { font: 'fuzzy', size: 46, x: 24, y: 70 });
   const note = text(jp, { font: 'mincho', size: 19, x: 24 + head.width + 18, y: 66 });
   const end = 24 + head.width + 18 + note.width;
   const style = `

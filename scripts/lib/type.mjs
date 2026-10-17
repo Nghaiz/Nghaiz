@@ -10,7 +10,7 @@ const FONT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '
 const GOOGLE_FONTS_RAW = 'https://raw.githubusercontent.com/google/fonts/main/ofl';
 
 const SOURCES = {
-  vibes: 'greatvibes/GreatVibes-Regular.ttf',
+  fuzzy: 'fuzzybubbles/FuzzyBubbles-Bold.ttf',
   mont: 'montserratalternates/MontserratAlternates-Regular.ttf',
   montb: 'montserratalternates/MontserratAlternates-SemiBold.ttf',
   mincho: 'shipporiminchob1/ShipporiMinchoB1-Bold.ttf',

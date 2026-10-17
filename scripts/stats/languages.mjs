@@ -40,7 +40,7 @@ export function languagesCard(d) {
     })
     .join('');
   const pct = text(`${Math.round(items[0].share * 100)}%`, { font: 'mincho', size: 40, x: cx, y: cy + 8, anchor: 'middle' });
-  const name = text(items[0].name, { font: 'vibes', size: 30, x: cx, y: cy + 40, anchor: 'middle' });
+  const name = text(items[0].name, { font: 'fuzzy', size: 18, x: cx, y: cy + 36, anchor: 'middle' });
   const legend = items
     .map((it, i) => {
       const y = 134 + i * 36;

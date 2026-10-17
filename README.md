@@ -81,7 +81,7 @@ The scenes are stills and fanart from Makoto Shinkai's films. All rights stay wi
 - About and stats banner: *Your Name* (君の名は。) © 2016 TOHO / CoMix Wave Films
 - Footer: *Weathering With You* (天気の子) © 2019 “Weathering With You” Film Partners / CoMix Wave Films
 
-The motion on top of them (comet, rain, aviation lights, sunlight) and every card here are generated SVGs. `npm run build` redraws them from [`scripts/profile.config.mjs`](scripts/profile.config.mjs); GitHub Actions refresh the stats cards, the 3D calendar and the snake every day. Fonts: Great Vibes, Montserrat Alternates and Shippori Mincho B1 (SIL Open Font License). Icons: [skillicons.dev](https://skillicons.dev).
+The motion on top of them (comet, rain, aviation lights, sunlight) and every card here are generated SVGs. `npm run build` redraws them from [`scripts/profile.config.mjs`](scripts/profile.config.mjs); GitHub Actions refresh the stats cards, the 3D calendar and the snake every day. Fonts: Fuzzy Bubbles, Montserrat Alternates and Shippori Mincho B1 (SIL Open Font License). Icons: [skillicons.dev](https://skillicons.dev).
 
 </sub>
 </details>

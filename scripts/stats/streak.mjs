@@ -9,9 +9,9 @@ const H = 380;
 const RING = { cx: 600, cy: 196, r: 104 };
 
 function column(x, label, value, unit, sub, grad) {
-  const l = text(label, { font: 'vibes', size: 50, x, y: 74, anchor: 'middle' });
+  const l = text(label, { font: 'fuzzy', size: 34, x, y: 70, anchor: 'middle' });
   const v = text(value, { font: 'mincho', size: value.length > 3 ? 84 : 108, x, y: 232, anchor: 'middle' });
-  const u = text(unit, { font: 'vibes', size: 34, x, y: 280, anchor: 'middle' });
+  const u = text(unit, { font: 'fuzzy', size: 22, x, y: 280, anchor: 'middle' });
   const s = text(sub, { font: 'minchoM', size: 19, x, y: 340, anchor: 'middle' });
   return `<path d="${l.d}" fill="#FFFFFF"/>${glowing(v.d, grad)}<path d="${u.d}" fill="${C.soft}"/><path d="${s.d}" fill="${C.faint}"/>`;
 }

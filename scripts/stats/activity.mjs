@@ -41,10 +41,10 @@ export function activityCard(d) {
   const flip = px > W - 300;
   // "95 on Oct 15", always read left to right; placed left of the peak when it sits near the edge
   const numW = text(`${days[peak].contributionCount}`, { font: 'mincho', size: 34 }).width;
-  const dayW = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'vibes', size: 28 }).width;
+  const dayW = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'fuzzy', size: 20 }).width;
   const lx = flip ? px - 20 - (numW + 10 + dayW) : px + 20;
   const peakNum = text(`${days[peak].contributionCount}`, { font: 'mincho', size: 34, x: lx, y: py - 8 });
-  const peakDay = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'vibes', size: 28, x: lx + numW + 10, y: py - 8 });
+  const peakDay = text(`on ${MONTHS[pm - 1]} ${pd}`, { font: 'fuzzy', size: 20, x: lx + numW + 10, y: py - 8 });
   const ticks = days
     .map((x, i) => {
       if (i % 5 !== 0 && i !== days.length - 1) return '';

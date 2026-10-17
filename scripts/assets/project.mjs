@@ -23,7 +23,7 @@ export function project(p, login, seed) {
   const card = nightCard({ w: W, h: H, seed });
   const accent = GRAD[p.accent][1];
   const kind = text(p.kind, { font: 'mincho', size: 15, x: 34, y: 48, tracking: 2 });
-  const title = text(p.title, { font: 'vibes', size: 56, x: 32, y: 112 });
+  const title = text(p.title, { font: 'fuzzy', size: 34, x: 34, y: 106 });
   const lines = wrap(p.desc, 'minchoM', 18, W - 70).slice(0, 3);
   const desc = lines.map((l, i) => text(l, { font: 'minchoM', size: 18, x: 34, y: 158 + i * 28 }).d).join('');
   let x = 34;
@@ -34,7 +34,7 @@ export function project(p, login, seed) {
     x += td.width + 40;
   }
   const team = !p.repo.startsWith(`${login}/`);
-  const note = team ? text('team project', { font: 'vibes', size: 28, x: W - 34, y: 52, anchor: 'end' }) : null;
+  const note = team ? text('team project', { font: 'fuzzy', size: 18, x: W - 34, y: 52, anchor: 'end' }) : null;
   const style = `${card.css}
     @keyframes up{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}} .up{animation:up .9s ease-out both}`;
   const body = `${card.svg}

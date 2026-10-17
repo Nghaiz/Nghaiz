@@ -25,7 +25,7 @@ export const HEADING = {
 export const SERIES = [C.comet, C.sunset, C.gold, C.violet, C.sky, C.mint, C.faint];
 
 export const FONT = {
-  script: 'vibes', // Great Vibes — calligraphic script for the name and headings (Latin + Vietnamese)
+  display: 'fuzzy', // Fuzzy Bubbles Bold — bold rounded handwriting for the name, headings and labels (Latin + Vietnamese)
   ui: 'mont', // Montserrat Alternates Regular — interface text (Latin + Vietnamese)
   uiBold: 'montb', // Montserrat Alternates SemiBold — numbers, labels, titles
   jp: 'mincho', // Shippori Mincho B1 Bold — Japanese, the mincho of the film title cards

@@ -24,9 +24,9 @@ export function tokyo() {
     @keyframes win{0%,100%{opacity:.1}50%{opacity:.9}} .win{animation:win ease-in-out infinite}
     @keyframes mist{0%{transform:translateX(-${W}px)}100%{transform:translateX(${W}px)}} .mist{animation:mist 40s linear infinite}`;
   const defs = `<clipPath id="frame"><rect width="${W}" height="${H}" rx="16"/></clipPath>
-    <linearGradient id="mistG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#CFE2FF" stop-opacity="0"/><stop offset=".5" stop-color="#CFE2FF" stop-opacity=".22"/><stop offset="1" stop-color="#CFE2FF" stop-opacity="0"/></linearGradient>`;
+    <radialGradient id="mistG"><stop offset="0" stop-color="#CFE2FF" stop-opacity=".22"/><stop offset="1" stop-color="#CFE2FF" stop-opacity="0"/></radialGradient>`;
   const body = `<g clip-path="url(#frame)">${img.svg}
-    <rect class="mist" x="0" y="180" width="${W}" height="120" fill="url(#mistG)"/>
+    <ellipse class="mist" cx="${W / 2}" cy="240" rx="${W * 0.6}" ry="70" fill="url(#mistG)"/>
     ${windows}${beacons}${drops.svg}</g>`;
   return doc({ width: W, height: H, title: 'Tokyo on a rainy night', desc: 'Still from Your Name (© 2016 TOHO / CoMix Wave Films) with animated rain and blinking aviation lights.', style, defs, body });
 }
@@ -39,7 +39,7 @@ export function dawnBanner({ title, jp }) {
   const sweep = lightSweep({ w: W, h: H, opacity: 0.18, dur: 11, color: '#FFF1D6' });
   const sparks = shootingStars([[606, 146, -26, 60, 1], [600, 120, -30, 80, 3.5], [612, 90, -22, 70, 6]], { prefix: 'sp', period: 7, len: 26, color: '#FFE9C4' });
   const sky = motes({ count: 18, x0: 0, x1: W, y0: 230, y1: 340, seed: 6, color: '#FFF6E0', rise: 30, max: 1.6 });
-  const t = text(title, { font: 'vibes', size: 64, x: 54, y: 96 });
+  const t = text(title, { font: 'fuzzy', size: 46, x: 54, y: 92 });
   const j = text(jp, { font: 'mincho', size: 20, x: 60 + t.width + 14, y: 92 });
   const st = shadowedText(`${t.d}${j.d}`, '#FFFFFF', { id: 'shT', blur: 6, opacity: 0.6, shadow: '#0A1A4A' });
   const style = `${img.css} ${sweep.css} ${sparks.css} ${sky.css}
@@ -64,7 +64,7 @@ export function sunlight() {
   const img = imageLayer('sunlight', W, H, { zoom: 1.04, dur: 30, ox: '75%', oy: '40%' });
   const leaves = bokeh({ count: 26, x0: 420, x1: W, y0: 0, y1: 230, seed: 9 });
   const sweep = lightSweep({ w: W, h: H, opacity: 0.16, dur: 12, color: '#FFF4D6', prefix: 'fsw' });
-  const a = text('Cảm ơn bạn đã ghé thăm!', { font: 'vibes', size: 68, x: 54, y: 168 });
+  const a = text('Cảm ơn bạn đã ghé thăm!', { font: 'fuzzy', size: 48, x: 54, y: 168 });
   const b = text('THANKS FOR STOPPING BY   ·   ', { font: 'montb', size: 14, x: 60, y: 214, tracking: 3 });
   const c = text('またね', { font: 'mincho', size: 18, x: 60 + b.width, y: 215 });
   const sa = shadowedText(a.d, '#FFFFFF', { id: 'shA', blur: 7, opacity: 0.6, shadow: '#06140E' });

@@ -16,7 +16,7 @@ const MAX_BYTES = 250 * 1024;
 async function main() {
   const login = process.env.PROFILE_USER || 'Nghaiz';
   const data = await fetchProfile(login, process.env.GITHUB_TOKEN);
-  await loadFonts(['vibes', 'mincho', 'minchoM']);
+  await loadFonts(['fuzzy', 'mincho', 'minchoM']);
 
   const cards = {
     'overview.svg': overviewCard(data),

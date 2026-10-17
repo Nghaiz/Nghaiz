@@ -19,7 +19,7 @@ export function hero(profile) {
   const X = 1140;
   const helloJp = text(profile.greetingJp, { font: 'mincho', size: 20, x: X, y: 226, anchor: 'end' });
   const hello = text(`${profile.greeting.toUpperCase()}   ·   `, { font: 'montb', size: 15, x: X - helloJp.width, y: 224, anchor: 'end', tracking: 3 });
-  const name = text(profile.name, { font: 'vibes', size: 104, x: X, y: 318, anchor: 'end' });
+  const name = text(profile.name, { font: 'fuzzy', size: 82, x: X, y: 318, anchor: 'end' });
   const tag = text(profile.tagline.toUpperCase(), { font: 'montb', size: 15, x: X, y: 362, anchor: 'end', tracking: 3 });
   const jp = text(profile.titleJp, { font: 'mincho', size: 24, x: X, y: 408, anchor: 'end' });
   const t1 = shadowedText(name.d, '#FFFFFF', { id: 'shName', blur: 10, opacity: 0.55 });

@@ -15,7 +15,7 @@ export const day = (iso) => {
 
 /** Title row shared by the stats cards: script title + small mincho caption on the right. */
 export function cardTitle(title, caption, w = W) {
-  const t = text(title, { font: 'vibes', size: 54, x: 34, y: 76 });
+  const t = text(title, { font: 'fuzzy', size: 36, x: 34, y: 70 });
   const c = text(caption, { font: 'minchoM', size: 17, x: w - 36, y: 58, anchor: 'end' });
   return `<path d="${t.d}" fill="#FFFFFF"/><path d="${c.d}" fill="${C.soft}"/>`;
 }
@@ -25,7 +25,7 @@ export const IN_CSS = '@keyframes in{0%{opacity:0;transform:translateY(10px)}100
 export function overviewCard(d) {
   const card = nightCard({ w: W, h: H, seed: 3 });
   const big = text(num(d.totalContributions), { font: 'mincho', size: 92, x: 34, y: 196 });
-  const unit = text('contributions', { font: 'vibes', size: 40, x: 34 + big.width + 16, y: 194 });
+  const unit = text('contributions', { font: 'fuzzy', size: 24, x: 34 + big.width + 16, y: 194 });
   const metrics = [
     [d.commits, 'commits', 'comet'],
     [d.prs, 'pull requests', 'sunset'],
@@ -36,7 +36,7 @@ export function overviewCard(d) {
     .map(([value, label, grad], i) => {
       const x = 34 + i * 140;
       const v = text(num(value), { font: 'mincho', size: 40, x, y: 288 });
-      const l = text(label, { font: 'vibes', size: 30, x: x + 2, y: 326 });
+      const l = text(label, { font: 'fuzzy', size: 17, x: x + 2, y: 324 });
       return `<g class="in" style="animation-delay:${fmt(0.45 + i * 0.12)}s">${glowing(v.d, grad, 0.45)}<path d="${l.d}" fill="${C.soft}"/></g>`;
     })
     .join('');
