@@ -19,8 +19,8 @@ export const profile = {
     },
     {
       file: 'project-drone',
-      kind: 'DRONE  ·  COMPUTER VISION',
-      title: 'IOT-CV',
+      kind: 'IOT-CV  ·  ARDUPILOT',
+      title: 'Drone Vision',
       accent: 'sunset',
       desc: 'An S500 quadcopter on ArduPilot, flown from a web ground station we wrote ourselves, with obstacle avoidance and person detection.',
       tags: ['TypeScript', 'ArduPilot', 'Vision AI'],

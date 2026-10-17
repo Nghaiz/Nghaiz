@@ -11,12 +11,12 @@ import { streakCard } from './stats/streak.mjs';
 import { activityCard } from './stats/activity.mjs';
 
 const OUT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'assets', 'generated');
-const MAX_BYTES = 150 * 1024;
+const MAX_BYTES = 250 * 1024;
 
 async function main() {
   const login = process.env.PROFILE_USER || 'Nghaiz';
   const data = await fetchProfile(login, process.env.GITHUB_TOKEN);
-  await loadFonts(['vibes', 'mont', 'montb']);
+  await loadFonts(['vibes', 'mincho', 'minchoM']);
 
   const cards = {
     'overview.svg': overviewCard(data),

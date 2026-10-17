@@ -14,6 +14,7 @@ const SOURCES = {
   mont: 'montserratalternates/MontserratAlternates-Regular.ttf',
   montb: 'montserratalternates/MontserratAlternates-SemiBold.ttf',
   mincho: 'shipporiminchob1/ShipporiMinchoB1-Bold.ttf',
+  minchoM: 'shipporiminchob1/ShipporiMinchoB1-Medium.ttf',
 };
 
 const loaded = new Map();

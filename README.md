@@ -42,7 +42,7 @@ I once wrote Snake in 8086 assembly. I don't recommend it.
 
 <p align="center">
   <a href="https://github.com/Nghaiz/LTM"><img src="assets/project-ironfront.svg" width="49%" alt="Ironfront: Reborn"></a>
-  <a href="https://github.com/ngtukien/IOT-CV"><img src="assets/project-drone.svg" width="49%" alt="IOT-CV"></a>
+  <a href="https://github.com/ngtukien/IOT-CV"><img src="assets/project-drone.svg" width="49%" alt="Drone Vision (IOT-CV)"></a>
   <a href="https://github.com/ngtukien/Vietnam-Real-Estates"><img src="assets/project-realestate.svg" width="49%" alt="Vietnam Real Estates"></a>
   <a href="https://github.com/Nghaiz/Intelligent-System-Development"><img src="assets/project-intelligent.svg" width="49%" alt="Intelligent Systems"></a>
 </p>

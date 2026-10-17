@@ -1,10 +1,10 @@
-// "This year" card: the year's contribution total, then commits / PRs / issues / stars.
+// "Year in review" card: the year's total as a huge glowing mincho number, four metrics below.
 import { C } from '../lib/theme.mjs';
 import { text } from '../lib/type.mjs';
-import { doc, nightCard, fmt } from '../lib/svg.mjs';
+import { doc, nightCard, glowing, fmt } from '../lib/svg.mjs';
 
 const W = 600;
-const H = 300;
+const H = 360;
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export const num = (n) => n.toLocaleString('en-US');
@@ -13,36 +13,38 @@ export const day = (iso) => {
   return `${MONTHS[m - 1]} ${d}, ${y}`;
 };
 
-/** Title row shared by the stats cards: small spaced caps label + script title. */
-export function cardTitle(label, title, color = C.comet) {
-  const l = text(label, { font: 'montb', size: 11, x: 34, y: 42, tracking: 2.5 });
-  const t = text(title, { font: 'vibes', size: 40, x: 32, y: 84 });
-  return `<path d="${l.d}" fill="${color}"/><path d="${t.d}" fill="${C.text}"/>`;
+/** Title row shared by the stats cards: script title + small mincho caption on the right. */
+export function cardTitle(title, caption, w = W) {
+  const t = text(title, { font: 'vibes', size: 54, x: 34, y: 76 });
+  const c = text(caption, { font: 'minchoM', size: 17, x: w - 36, y: 58, anchor: 'end' });
+  return `<path d="${t.d}" fill="#FFFFFF"/><path d="${c.d}" fill="${C.soft}"/>`;
 }
+
+export const IN_CSS = '@keyframes in{0%{opacity:0;transform:translateY(10px)}100%{opacity:1;transform:none}} .in{animation:in .9s ease-out both}';
 
 export function overviewCard(d) {
   const card = nightCard({ w: W, h: H, seed: 3 });
-  const big = text(num(d.totalContributions), { font: 'montb', size: 54, x: 34, y: 172 });
-  const bigLabel = text('contributions in the last 12 months', { font: 'mont', size: 14, x: 36, y: 200 });
+  const big = text(num(d.totalContributions), { font: 'mincho', size: 92, x: 34, y: 196 });
+  const unit = text('contributions', { font: 'vibes', size: 40, x: 34 + big.width + 16, y: 194 });
   const metrics = [
-    ['COMMITS', d.commits, C.comet],
-    ['PULL REQUESTS', d.prs, C.sunset],
-    ['ISSUES', d.issues, C.gold],
-    ['STARS EARNED', d.stars, C.violet],
+    [d.commits, 'commits', 'comet'],
+    [d.prs, 'pull requests', 'sunset'],
+    [d.issues, 'issues', 'gold'],
+    [d.stars, 'stars', 'violet'],
   ];
   const cells = metrics
-    .map(([label, value, color], i) => {
-      const x = 34 + i * 136;
-      const v = text(num(value), { font: 'montb', size: 24, x, y: 258 });
-      const l = text(label, { font: 'montb', size: 9.5, x, y: 276, tracking: 1.6 });
-      return `<g class="in" style="animation-delay:${fmt(0.4 + i * 0.12)}s"><rect x="${x}" y="226" width="16" height="2.5" rx="1.25" fill="${color}"/><path d="${v.d}" fill="${C.text}"/><path d="${l.d}" fill="${C.faint}"/></g>`;
+    .map(([value, label, grad], i) => {
+      const x = 34 + i * 140;
+      const v = text(num(value), { font: 'mincho', size: 40, x, y: 288 });
+      const l = text(label, { font: 'vibes', size: 30, x: x + 2, y: 326 });
+      return `<g class="in" style="animation-delay:${fmt(0.45 + i * 0.12)}s">${glowing(v.d, grad, 0.45)}<path d="${l.d}" fill="${C.soft}"/></g>`;
     })
     .join('');
-  const style = `${card.css}
-    @keyframes in{0%{opacity:0;transform:translateY(8px)}100%{opacity:1;transform:none}} .in{animation:in .8s ease-out both}`;
+  const style = `${card.css} ${IN_CSS}`;
   const body = `${card.svg}
-    <g class="in">${cardTitle('GITHUB  ·  THIS YEAR', 'Year in review')}</g>
-    <g class="in" style="animation-delay:.2s"><path d="${big.d}" fill="${C.text}"/><path d="${bigLabel.d}" fill="${C.soft}"/></g>
+    <g class="in">${cardTitle('Year in review', 'last 12 months')}</g>
+    <g class="in" style="animation-delay:.2s">${glowing(big.d, 'comet')}<path d="${unit.d}" fill="#FFFFFF"/></g>
+    <path d="M34 226H${W - 34}" stroke="url(#ncRim)" stroke-width="1.2" opacity=".6"/>
     ${cells}`;
-  return doc({ width: W, height: H, title: `${num(d.totalContributions)} contributions this year`, desc: metrics.map(([l, v]) => `${l.toLowerCase()}: ${num(v)}`).join(', '), style, defs: card.defs, body });
+  return doc({ width: W, height: H, title: `${num(d.totalContributions)} contributions this year`, desc: metrics.map(([v, l]) => `${l}: ${num(v)}`).join(', '), style, defs: card.defs, body });
 }
