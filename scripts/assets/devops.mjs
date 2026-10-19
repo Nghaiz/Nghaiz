@@ -4,7 +4,8 @@
 import { words as text, measure } from '../lib/type.mjs';
 import { doc, fmt } from '../lib/svg.mjs';
 import { doodle, PAPER } from '../lib/doodles.mjs';
-import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, squiggle, sticker, inkStar, inkPlus, inkArrow, logo } from '../lib/journal.mjs';
+import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, squiggle, sticker, inkStar, inkPlus, inkArrow } from '../lib/journal.mjs';
+import { logo } from '../lib/images.mjs';
 
 const W = 1200;
 const H = 574;

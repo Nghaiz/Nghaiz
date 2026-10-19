@@ -1,8 +1,9 @@
 // "Languages" journal page: logo stickers, hand-drawn share bars, and how many more there are.
 import { words as text } from '../lib/type.mjs';
-import { doc, fmt } from '../lib/svg.mjs';
+import { doc, fmt, waveDelay } from '../lib/svg.mjs';
 import { doodle, PAPER } from '../lib/doodles.mjs';
-import { TONES, INK, STICKERS, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, sticker, logo } from '../lib/journal.mjs';
+import { TONES, INK, STICKERS, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, sticker } from '../lib/journal.mjs';
+import { logo } from '../lib/images.mjs';
 
 const W = 600;
 const H = 510;
@@ -32,7 +33,7 @@ export function languagesCard(d, tone) {
       return `${sticker(tone, { x: 28, y: y - 6, w: 50, h: 50, fill: '#FFFFFF', rot: i % 2 ? 2 : -2, delay: 0.2 + i * 0.1, r: 14, content: logo(it.name, 53, y + 19, 30) })}
         ${name.paint(`${t.ink}`)}${pct.paint(`${t.soft}`)}
         <rect x="${BAR_X}" y="${y + 28}" width="${BAR_W}" height="10" rx="5" fill="none" stroke="${t.ink}" stroke-opacity=".25" stroke-width="1.4" stroke-dasharray="3 4"/>
-        <rect class="grow" style="animation-delay:${fmt(0.4 + i * 0.1)}s" x="${BAR_X}" y="${y + 28}" width="${fmt(fillW)}" height="10" rx="5" fill="${STICKERS[i % STICKERS.length]}" stroke="${INK}" stroke-width="1.4"/>`;
+        <rect class="grow" style="${waveDelay(0.4 + i * 0.1)}" x="${BAR_X}" y="${y + 28}" width="${fmt(fillW)}" height="10" rx="5" fill="${STICKERS[i % STICKERS.length]}" stroke="${INK}" stroke-width="1.4"/>`;
     })
     .join('');
   const more = all.length - top.length;
