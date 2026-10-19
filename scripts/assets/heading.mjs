@@ -2,7 +2,7 @@
 // Transparent background, so each heading ships a light and a dark variant for <picture>.
 import { HEADING } from '../lib/theme.mjs';
 import { words as text } from '../lib/type.mjs';
-import { doc } from '../lib/svg.mjs';
+import { doc, fmt, CYCLE, FIRST_WAVE, redrawKeyframes } from '../lib/svg.mjs';
 import { glint } from '../lib/fx.mjs';
 
 const W = 1200;
@@ -15,7 +15,8 @@ export function heading({ title, jp, note }, mode = 'light') {
   const aside = note ? text(note, { font: 'fuzzyR', size: 18, x: W - 28, y: 66, anchor: 'end' }) : null;
   const X1 = W - 28;
   const style = `
-    @keyframes draw{to{stroke-dashoffset:0}} .ln{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.6s cubic-bezier(.3,0,.2,1) .2s forwards}
+    @keyframes draw{to{stroke-dashoffset:0}} ${redrawKeyframes('redraw', 1200)}
+    .ln{stroke-dasharray:1200;stroke-dashoffset:1200;animation:draw 1.6s cubic-bezier(.3,0,.2,1) .2s forwards,redraw ${CYCLE}s ease-in-out ${fmt(0.2 + FIRST_WAVE)}s infinite}
     @keyframes tw{0%,100%{transform:scale(.6) rotate(0);opacity:.6}50%{transform:scale(1.1) rotate(45deg);opacity:1}} .tw{transform-box:fill-box;transform-origin:center;animation:tw 3s ease-in-out infinite}
     @keyframes fade{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}} .fade{animation:fade 1s ease-out both}`;
   // userSpaceOnUse: a horizontal line has a zero-height bounding box, and an objectBoundingBox

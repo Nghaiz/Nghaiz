@@ -36,12 +36,15 @@ export const DEVOPS = {
   next: { title: 'next on the road', note: 'learning these now', items: ['AWS', 'Google Cloud', 'Azure', 'Prometheus', 'Grafana'] },
 };
 
-/** The toolbox cards under it, in README order (two per row, so pairs keep the same height). */
+/**
+ * The toolbox cards under it, in README order (two per row, so pairs keep the same height).
+ * `scene` picks the little moving scene in the header corner (assets/vignettes.mjs).
+ */
 export const STACK = [
-  { key: 'languages', title: 'Languages', note: 'what I think in', doodle: 'code', items: ['C#', 'Python', 'TypeScript', 'JavaScript', 'Java', 'Go', 'Dart', 'C++', 'Bash', 'PowerShell'] },
-  { key: 'apps', title: 'Apps & games', note: 'web, mobile, Unity', doodle: 'browser', items: ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Three.js', 'HTML', 'CSS', 'Flutter', 'Unity'] },
-  { key: 'backend', title: 'Backend', note: 'APIs, services, queues', doodle: 'server', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Spring Boot', '.NET', 'Socket.IO', 'RabbitMQ'] },
-  { key: 'data', title: 'Data & AI', note: 'notebooks to models', doodle: 'flask', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'NumPy', 'Pandas', 'Jupyter', 'Streamlit', 'XGBoost', 'YOLO'] },
-  { key: 'stores', title: 'Databases', note: 'where the data lives', doodle: 'database', items: ['MongoDB', 'MySQL', 'Redis', 'SQLite', 'Neo4j'] },
-  { key: 'tools', title: 'Everyday tools', note: 'editors and testing', doodle: 'wrench', items: ['VS Code', 'IntelliJ IDEA', 'Postman', 'Pytest', 'Playwright'] },
+  { key: 'languages', title: 'Languages', note: 'what I think in', doodle: 'code', items: ['C#', 'Python', 'TypeScript', 'JavaScript', 'Java', 'Go', 'Dart', 'C++', 'Bash', 'PowerShell'], scene: { kind: 'typing', snippets: [['Python', 'print("hello")'], ['Go', 'fmt.Println("hi")'], ['C#', 'Debug.Log("hi");'], ['TypeScript', 'console.log("hi")']] } },
+  { key: 'apps', title: 'Apps & games', note: 'web, mobile, Unity', doodle: 'browser', items: ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Three.js', 'HTML', 'CSS', 'Flutter', 'Unity'], scene: 'browser' },
+  { key: 'backend', title: 'Backend', note: 'APIs, services, queues', doodle: 'server', items: ['Node.js', 'Express', 'FastAPI', 'Flask', 'Spring Boot', '.NET', 'Socket.IO', 'RabbitMQ'], scene: 'packets' },
+  { key: 'data', title: 'Data & AI', note: 'notebooks to models', doodle: 'flask', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'OpenCV', 'NumPy', 'Pandas', 'Jupyter', 'Streamlit', 'XGBoost', 'YOLO'], scene: 'training' },
+  { key: 'stores', title: 'Databases', note: 'where the data lives', doodle: 'database', items: ['MongoDB', 'MySQL', 'Redis', 'SQLite', 'Neo4j'], scene: 'sync' },
+  { key: 'tools', title: 'Everyday tools', note: 'editors and testing', doodle: 'wrench', items: ['VS Code', 'IntelliJ IDEA', 'Postman', 'Pytest', 'Playwright'], scene: 'checklist' },
 ];

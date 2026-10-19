@@ -3,7 +3,8 @@
 import { words as text } from '../lib/type.mjs';
 import { doc, fmt } from '../lib/svg.mjs';
 import { doodle, PAPER } from '../lib/doodles.mjs';
-import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, sticker, squiggle, marker, inkStar, inkHeart, polaroid, photo } from '../lib/journal.mjs';
+import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, sticker, squiggle, marker, inkStar, inkHeart, polaroid } from '../lib/journal.mjs';
+import { photo } from '../lib/images.mjs';
 
 const W = 600;
 const H = 510;

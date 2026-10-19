@@ -1,7 +1,7 @@
 // "The last 31 days" journal page: a pencil line on graph paper, with a handwritten note and an
 // arrow pointing at the busiest day.
 import { words as text } from '../lib/type.mjs';
-import { doc, fmt } from '../lib/svg.mjs';
+import { doc, fmt, waveDelay } from '../lib/svg.mjs';
 import { PAPER } from '../lib/doodles.mjs';
 import { TONES, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, inkStar, inkArrow } from '../lib/journal.mjs';
 import { num, day } from './overview.mjs';
@@ -58,14 +58,14 @@ export function activityCard(d, tone) {
       return `${tk.paint(`${t.faint}`)}`;
     })
     .join('');
-  const dots = pts.map(([x, y], i) => `<circle class="fadein" style="animation-delay:${fmt(1 + i * 0.03)}s" cx="${fmt(x)}" cy="${fmt(y)}" r="3.2" fill="${t.paper}" stroke="${t.ink}" stroke-width="1.6"/>`).join('');
+  const dots = pts.map(([x, y], i) => `<circle class="pop" style="${waveDelay(1 + i * 0.03)}" cx="${fmt(x)}" cy="${fmt(y)}" r="3.2" fill="${t.paper}" stroke="${t.ink}" stroke-width="1.6"/>`).join('');
   const avg = (total / days.length).toFixed(1);
   const body = `<g clip-path="url(#card)">${paperBg(tone, { w: W, h: H })}
     ${cardHeader(tone, { title: 'The last 31 days', note: `${num(total)} contributions, about ${avg} a day`, doodleName: 'mug', tint: PAPER.blue, seed: 8 })}
     <rect x="${GX0}" y="${GY0}" width="${GX1 - GX0}" height="${GY1 - GY0}" rx="10" fill="${t.paper}" stroke="${t.ink}" stroke-opacity=".18"/>
     <path d="${grid}" stroke="${t.grid}" stroke-opacity="${t.gridOp * 1.6}" stroke-width="1"/>
     <g class="fadein" style="animation-delay:.9s"><path d="${line}L${X1} ${BASE}L${X0} ${BASE}Z" fill="${t.marker}" opacity="${t.markerOp * 0.45}"/></g>
-    <path class="ul" style="animation-duration:2.4s;stroke-dasharray:3200;stroke-dashoffset:3200" d="${line}" fill="none" stroke="${t.ink}" stroke-width="2.6" stroke-linecap="round"/>
+    <path class="trace" style="stroke-dasharray:3200;stroke-dashoffset:3200" d="${line}" fill="none" stroke="${t.ink}" stroke-width="2.6" stroke-linecap="round"/>
     ${dots}
     <g class="fadein" style="animation-delay:2s">${inkStar(px, py - 22, 11, t.squiggle, 0, 0)}${arrow}${n1.paint(`${t.ink}`)}${n2.paint(`${t.soft}`)}</g>
     ${ticks}</g>

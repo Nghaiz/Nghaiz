@@ -1,13 +1,9 @@
 // "Cozy journal" design system shared by every widget: two paper tones that follow the viewer's
 // GitHub theme (night journal for dark, cream paper for light), matte sticker papers, washi tape
 // with torn ends, and hand-drawn marks. Everything returns SVG markup strings.
-import fs from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { fmt, rng } from './svg.mjs';
-import { words as text } from './type.mjs';
+import { fmt, rng, CYCLE, FIRST_WAVE, waveDelay, redrawKeyframes } from './svg.mjs';
+import { words as text, measure } from './type.mjs';
 import { doodle, PAPER } from './doodles.mjs';
-import { LOGOS } from '../stack.config.mjs';
 
 export const TONES = {
   night: {
@@ -24,16 +20,30 @@ export const TONES = {
 export const MODES = { dark: 'night', light: 'cream' };
 export const INK = '#3A3245'; // ink on stickers, identical in both tones
 export const STICKERS = [PAPER.blue, PAPER.lavender, PAPER.rose, PAPER.sage, PAPER.butter, PAPER.peach, PAPER.mint];
+/** Stickers wider than this lift without the tilt: on a long sticker the tilt turns into a seesaw. */
+const WIDE_STICKER = 160;
 export const TAPE = { rose: ['#E8B4B8', 'tpDots'], sage: ['#A8C3A0', 'tpStripes'], blue: ['#A9C6E8', 'tpGrid'], butter: ['#F2D7A0', 'tpDots'], lilac: ['#CBB8E6', 'tpStripes'] };
 
-/** Shared animation vocabulary: stickers get placed, ink gets drawn, doodles breathe. Calm, no bounce. */
+/**
+ * Shared animation vocabulary: stickers get placed, ink gets drawn, doodles breathe. Calm, no bounce.
+ * Entrances are followed by the CYCLE wave (see lib/svg.mjs); give staggered elements `waveDelay()`.
+ */
 export const JOURNAL_CSS = `
-  @keyframes place{0%{opacity:0;transform:translate(0,-8px) rotate(-3deg)}100%{opacity:1;transform:none}} .place{transform-box:fill-box;transform-origin:center;animation:place .9s cubic-bezier(.25,.8,.3,1) both}
-  @keyframes draw{to{stroke-dashoffset:0}} .ul{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.4s ease-out .4s forwards}
+  @keyframes place{0%{opacity:0;transform:translate(0,-8px) rotate(-3deg)}100%{opacity:1;transform:none}}
+  @keyframes lift{0%,11%,100%{transform:none}4.5%{transform:translateY(-6px) rotate(-2deg)}}
+  .place{transform-box:fill-box;transform-origin:center;animation:place .9s cubic-bezier(.25,.8,.3,1) 0s both,lift ${CYCLE}s ease-in-out ${FIRST_WAVE}s infinite}
+  @keyframes liftw{0%,11%,100%{transform:none}4.5%{transform:translateY(-4px)}} .place.wide{animation-name:place,liftw}
+  @keyframes draw{to{stroke-dashoffset:0}} ${redrawKeyframes('redraw', 600)}
+  .ul{stroke-dasharray:600;stroke-dashoffset:600;animation:draw 1.4s ease-out .4s forwards,redraw ${CYCLE}s ease-in-out ${fmt(0.4 + FIRST_WAVE)}s infinite}
+  .trace{animation:draw 2.4s ease-out .4s forwards}
   @keyframes tw{0%,100%{opacity:.45}50%{opacity:1}} .tw{animation:tw 3.6s ease-in-out infinite}
   @keyframes kb{0%{transform:scale(1.02)}100%{transform:scale(1.09)}} .kb{transform-origin:50% 50%;animation:kb 22s ease-in-out infinite alternate}
-  @keyframes mark{0%{transform:scaleX(0)}100%{transform:scaleX(1)}} .mark{transform-box:fill-box;transform-origin:left;animation:mark .8s ease-out .3s both}
-  @keyframes grow{0%{transform:scaleX(0)}100%{transform:scaleX(1)}} .grow{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.3,.7,.3,1) both}
+  @keyframes mark{0%{transform:scaleX(0)}100%{transform:scaleX(1)}} @keyframes remark{0%,16%,100%{transform:scaleX(1)}6%{transform:scaleX(0)}}
+  .mark{transform-box:fill-box;transform-origin:left;animation:mark .8s ease-out .3s both,remark ${CYCLE}s ease-in-out ${fmt(0.3 + FIRST_WAVE)}s infinite}
+  @keyframes grow{0%{transform:scaleX(0)}100%{transform:scaleX(1)}} @keyframes regrow{0%,18%,100%{transform:scaleX(1)}7%{transform:scaleX(.08)}}
+  .grow{transform-box:fill-box;transform-origin:left;animation:grow 1.1s cubic-bezier(.3,.7,.3,1) 0s both,regrow ${CYCLE}s ease-in-out ${FIRST_WAVE}s infinite}
+  @keyframes pop{0%,9%,100%{transform:none}4.5%{transform:scale(1.25)}}
+  .pop{transform-box:fill-box;transform-origin:center;animation:fadein .8s ease-out 0s both,pop ${CYCLE}s ease-in-out ${FIRST_WAVE}s infinite}
   @keyframes sway{0%,100%{transform:rotate(-2deg)}50%{transform:rotate(2deg)}} .sway{transform-box:fill-box;transform-origin:50% 0%;animation:sway 5s ease-in-out infinite}
   @keyframes fadein{0%{opacity:0}100%{opacity:1}} .fadein{animation:fadein .8s ease-out both}`;
 
@@ -81,7 +91,7 @@ export function sticker(tone, { x, y, w, h, fill, rot = 0, delay = 0, r = 16, bo
     ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#FFFBF3" fill-opacity=".82" stroke="${t.ink}" stroke-opacity=".45" stroke-width="1.6" stroke-dasharray="5 5"/>`
     : `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="#FFFBF3"/>`;
   const face = dashed ? '' : `<rect x="${x + border}" y="${y + border}" width="${w - 2 * border}" height="${h - 2 * border}" rx="${r - 3}" fill="${fill}"/><rect x="${x + border}" y="${y + border}" width="${w - 2 * border}" height="${h - 2 * border}" rx="${r - 3}" fill="url(#grainFill)" opacity=".5"/>`;
-  return `<g transform="rotate(${rot} ${fmt(x + w / 2)} ${fmt(y + h / 2)})"><g class="place" style="animation-delay:${fmt(delay)}s">
+  return `<g transform="rotate(${rot} ${fmt(x + w / 2)} ${fmt(y + h / 2)})"><g class="place${w > WIDE_STICKER ? ' wide' : ''}" style="${waveDelay(delay)}">
     ${dashed ? '' : `<rect x="${x + 1}" y="${y + 4}" width="${w}" height="${h}" rx="${r}" fill="${t.shadow}" opacity="${t.shadowOp}" filter="url(#soft)"/>`}${edge}${face}${content}</g></g>`;
 }
 
@@ -131,12 +141,21 @@ export function inkArrow(x1, y1, x2, y2, color, bend = -30) {
   return `<path class="ul" d="M${fmt(x1)} ${fmt(y1)}Q${fmt(mx)} ${fmt(my)} ${fmt(x2)} ${fmt(y2)}M${fmt(h1[0])} ${fmt(h1[1])}L${fmt(x2)} ${fmt(y2)}L${fmt(h2[0])} ${fmt(h2[1])}" fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`;
 }
 
+const HEADER = { x: 28, textDx: 78, titleSize: 30, noteSize: 16, noteDx: 2 };
+
+/** Right edge of cardHeader's title and note, so a card can keep other art clear of them. */
+export function cardHeaderRight({ title, note, x = HEADER.x, titleSize = HEADER.titleSize }) {
+  const tx = x + HEADER.textDx;
+  const noteRight = note ? tx + HEADER.noteDx + measure(note, { font: 'fuzzyR', size: HEADER.noteSize }) : 0;
+  return Math.max(tx + measure(title, { font: 'fuzzy', size: titleSize }), noteRight);
+}
+
 /** Card header: tilted doodle sticker, handwritten title with squiggle, small note under it. */
-export function cardHeader(tone, { title, note, doodleName, x = 28, y = 22, titleSize = 30, seed = 3, tint = PAPER.butter }) {
+export function cardHeader(tone, { title, note, doodleName, x = HEADER.x, y = 22, titleSize = HEADER.titleSize, seed = 3, tint = PAPER.butter }) {
   const t = TONES[tone];
-  const tx = x + 78;
+  const tx = x + HEADER.textDx;
   const head = text(title, { font: 'fuzzy', size: titleSize, x: tx, y: y + 36 });
-  const sub = note ? text(note, { font: 'fuzzyR', size: 16, x: tx + 2, y: y + 66 }) : null;
+  const sub = note ? text(note, { font: 'fuzzyR', size: HEADER.noteSize, x: tx + HEADER.noteDx, y: y + 66 }) : null;
   const badge = sticker(tone, { x, y, w: 62, h: 62, fill: tint, rot: -5, r: 16, content: doodle(doodleName, { x: x + 31, y: y + 31, size: 40, ink: INK }) });
   return `${badge}${head.paint(`${t.ink}`)}${squiggle(tx, tx + head.width, y + 46, t.squiggle, seed)}${sub ? `${sub.paint(`${t.soft}`)}` : ''}`;
 }
@@ -153,42 +172,4 @@ export function polaroid(tone, { x, y, w, h, rot = -3, image, caption, tapes = [
     <g clip-path="url(#pol)"><g class="kb">${image(x + pad, y + pad, w - 2 * pad, ph)}</g></g>
     ${text(caption, { font: 'fuzzyR', size: 16, x: x + w / 2, y: y + h - 12, anchor: 'middle' }).paint(`#6B5E70`)}
     ${tape(x + 38, y + 2, -16, tapes[0])}${tape(x + w - 34, y + 4, 12, tapes[1])}</g>`;
-}
-
-// ---------------------------------------------------------------- photos
-
-const IMG_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'assets', 'img');
-
-/** Image painter for a prepared crop in assets/img (see scripts/images.json): (x,y,w,h) → <image>. */
-export function photo(id) {
-  const file = path.join(IMG_DIR, `${id}.jpg`);
-  if (!fs.existsSync(file)) throw new Error(`Missing ${file} — run: python scripts/prepare_images.py <sources>`);
-  const href = `data:image/jpeg;base64,${fs.readFileSync(file).toString('base64')}`;
-  return (x, y, w, h) => `<image href="${href}" x="${fmt(x)}" y="${fmt(y)}" width="${fmt(w)}" height="${fmt(h)}" preserveAspectRatio="xMidYMid slice"/>`;
-}
-
-// ---------------------------------------------------------------- logos
-
-const LOGO_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'assets', 'logos');
-const logoCache = new Map();
-
-/** data: URI of the vendored devicon logo for a display name, or null when there is none. */
-export function logoData(name) {
-  const slug = LOGOS[name];
-  if (!slug) return null;
-  if (!logoCache.has(slug)) {
-    const file = path.join(LOGO_DIR, `${slug}.svg`);
-    if (!fs.existsSync(file)) throw new Error(`Logo for "${name}" not vendored (${slug}.svg) — run: npm run logos`);
-    logoCache.set(slug, `data:image/svg+xml;base64,${fs.readFileSync(file).toString('base64')}`);
-  }
-  return logoCache.get(slug);
-}
-
-/** A logo centred at (cx, cy) inside a size×size box, or initials on a pastel disc when no logo exists. */
-export function logo(name, cx, cy, size, fallbackFill = PAPER.lavender) {
-  const href = logoData(name);
-  if (href) return `<image href="${href}" x="${fmt(cx - size / 2)}" y="${fmt(cy - size / 2)}" width="${size}" height="${size}"/>`;
-  const words = name.replace(/[^A-Za-z0-9 ]/g, '').split(/\s+/).filter(Boolean);
-  const initials = (words.length > 1 ? words.map((w) => w[0]).join('') : words[0].length <= 4 ? words[0] : words[0].slice(0, 3)).slice(0, 4).toUpperCase();
-  return `<circle cx="${fmt(cx)}" cy="${fmt(cy)}" r="${fmt(size / 2)}" fill="${fallbackFill}" stroke="${INK}" stroke-width="1.6"/>${text(initials, { font: 'fuzzy', size: size * 0.38, x: cx, y: cy + size * 0.14, anchor: 'middle' }).paint(`${INK}`)}`;
 }

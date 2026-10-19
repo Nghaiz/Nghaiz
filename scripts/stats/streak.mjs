@@ -1,7 +1,7 @@
 // "My rhythm" journal page: three streak stickers and a bullet-journal habit tracker of the last
 // six weeks (one row per week, one column per weekday).
 import { words as text } from '../lib/type.mjs';
-import { doc, fmt } from '../lib/svg.mjs';
+import { doc, fmt, waveDelay } from '../lib/svg.mjs';
 import { doodle, PAPER } from '../lib/doodles.mjs';
 import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, sticker } from '../lib/journal.mjs';
 import { num, day } from './overview.mjs';
@@ -9,7 +9,7 @@ import { num, day } from './overview.mjs';
 const W = 1200;
 const H = 370;
 const WEEKS = 6;
-const LEVELS = ['#DCEBD5', '#BFD7B5', '#93B98A', '#6E9E66'];
+const LEVELS = ['#DCEBD5', '#BFD7B5', '#93B98A', PAPER.moss];
 
 function entry(tone, { x, y, fill, dd, value, unit, label, sub, rot, delay }) {
   const v = text(value, { font: 'fuzzy', size: 42, x: x + 115, y: y + 122, anchor: 'middle' });
@@ -52,8 +52,8 @@ export function streakCard(d, tone) {
       const cy = GY + w * 34;
       const delay = fmt(0.6 + (w * 7 + k) * 0.015);
       dots += c
-        ? `<circle class="fadein" style="animation-delay:${delay}s" cx="${cx}" cy="${cy}" r="12" fill="${LEVELS[Math.min(3, Math.floor((c / max) * 4))]}" stroke="${INK}" stroke-width="1.5"/>`
-        : `<circle class="fadein" style="animation-delay:${delay}s" cx="${cx}" cy="${cy}" r="12" fill="none" stroke="${t.ink}" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="3 3"/>`;
+        ? `<circle class="pop" style="${waveDelay(delay)}" cx="${cx}" cy="${cy}" r="12" fill="${LEVELS[Math.min(3, Math.floor((c / max) * 4))]}" stroke="${INK}" stroke-width="1.5"/>`
+        : `<circle class="pop" style="${waveDelay(delay)}" cx="${cx}" cy="${cy}" r="12" fill="none" stroke="${t.ink}" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="3 3"/>`;
       if (iso === d.allDays[d.allDays.length - 1].date) dots += `<circle class="tw" cx="${cx}" cy="${cy}" r="16.5" fill="none" stroke="${t.squiggle}" stroke-width="2" stroke-dasharray="4 3"/>`; // today
     }
   }

@@ -4,7 +4,7 @@ import { fmt } from './svg.mjs';
 
 export const PAPER = {
   butter: '#F3DDA4', peach: '#F5CBB0', rose: '#EFC1C4', roseDeep: '#E59AA6', blue: '#B9D3EE', blueDeep: '#8FB4DF',
-  lavender: '#CFC3EA', sage: '#BFD7B5', sageDeep: '#93B98A', mint: '#BFE3DA', cream: '#FFFBF3', grey: '#D9D1C7', ladybug: '#E58C8C',
+  lavender: '#CFC3EA', sage: '#BFD7B5', sageDeep: '#93B98A', moss: '#6E9E66', mint: '#BFE3DA', cream: '#FFFBF3', grey: '#D9D1C7', ladybug: '#E58C8C',
 };
 const P = PAPER;
 const ln = (ink, w = 2.2) => `stroke="${ink}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"`;

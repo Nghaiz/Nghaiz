@@ -1,7 +1,7 @@
 // "Achievements": paper award rosettes ranked C → SSS, after the idea behind
 // ryo-ma/github-profile-trophy. Thresholds and titles are this profile's own.
 import { words as text } from '../lib/type.mjs';
-import { doc, fmt } from '../lib/svg.mjs';
+import { doc, fmt, waveDelay } from '../lib/svg.mjs';
 import { doodle, PAPER } from '../lib/doodles.mjs';
 import { TONES, INK, JOURNAL_CSS, paperDefs, paperBg, paperBorder, cardHeader, sticker } from '../lib/journal.mjs';
 import { num } from './overview.mjs';
@@ -75,7 +75,7 @@ function tile(tone, cat, d, x, y, i) {
   const content = `${rosette(x + 66, y + 66, tier, cat.doodle, rank)}
     ${title.paint(`${INK}`)}${label.paint(`${INK}`, `fill-opacity=".6"`)}${val.paint(`${INK}`)}
     <rect x="${x + 132}" y="${y + 114}" width="210" height="11" rx="5.5" fill="#FFFBF3" stroke="${INK}" stroke-width="1.5"/>
-    <rect class="grow" style="animation-delay:${fmt(0.5 + i * 0.08)}s" x="${x + 132}" y="${y + 114}" width="${fmt(210 * progress)}" height="11" rx="5.5" fill="${tier[1]}" stroke="${INK}" stroke-width="1.5"/>
+    <rect class="grow" style="${waveDelay(0.5 + i * 0.08)}" x="${x + 132}" y="${y + 114}" width="${fmt(210 * progress)}" height="11" rx="5.5" fill="${tier[1]}" stroke="${INK}" stroke-width="1.5"/>
     ${nextLabel.paint(`${INK}`, `fill-opacity=".62"`)}`;
   return sticker(tone, { x, y, w: 368, h: 168, fill: tier[0], rot: [-1, 0.8, -0.6, 1, -0.8, 0.6, -1.1, 0.9, -0.7][i], delay: 0.2 + i * 0.08, content });
 }
